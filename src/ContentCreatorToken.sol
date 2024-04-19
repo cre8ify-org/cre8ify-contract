@@ -12,6 +12,7 @@ contract ContentCreatorToken is ERC20, Ownable {
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
+        require(amount > 0, "Amount must be greater than 0");
         _mint(to, amount);
     }
 }

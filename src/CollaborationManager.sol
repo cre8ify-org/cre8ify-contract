@@ -11,6 +11,8 @@ This contract allows content creators to collaborate with other users on their c
  
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "./ContentManager.sol";
+
 
 contract CollaborationManager is Ownable {
     IERC20 public contentCreatorToken;

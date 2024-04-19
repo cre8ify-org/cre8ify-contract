@@ -1,17 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-/**
-This contract allows brands to register their profiles on 
-the platform and sponsor content by paying fees for views, likes, and comments. 
-The fees are then transferred to the content creators, providing an additional revenue stream for them.
- */
-
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
+import "./ContentManager.sol";
 
 contract BrandManager is Ownable {
     IERC20 public contentCreatorToken;
+    ContentManager public contentManager;
 
     struct Brand {
         string name;
@@ -24,8 +20,9 @@ contract BrandManager is Ownable {
 
     mapping(address => Brand) public brands;
 
-    constructor(address _contentCreatorToken) {
+    constructor(address _contentCreatorToken, address _contentManager) {
         contentCreatorToken = IERC20(_contentCreatorToken);
+        contentManager = ContentManager(_contentManager);
     }
 
     function registerBrand(
@@ -61,9 +58,9 @@ contract BrandManager is Ownable {
             brands[msg.sender].contentFeePerView > 0,
             "Brand is not registered"
         );
-        ContentManager(msg.sender).viewContent(_contentId);
+        contentManager.viewContent(_contentId);
         contentCreatorToken.transfer(
-            ContentManager(msg.sender).owner(_contentId),
+            contentManager.owner(_contentId),
             brands[msg.sender].contentFeePerView
         );
     }
@@ -73,9 +70,9 @@ contract BrandManager is Ownable {
             brands[msg.sender].contentFeePerLike > 0,
             "Brand is not registered"
         );
-        ContentManager(msg.sender).likeContent(_contentId);
+        contentManager.likeContent(_contentId);
         contentCreatorToken.transfer(
-            ContentManager(msg.sender).owner(_contentId),
+            contentManager.owner(_contentId),
             brands[msg.sender].contentFeePerLike
         );
     }
@@ -85,9 +82,9 @@ contract BrandManager is Ownable {
             brands[msg.sender].contentFeePerComment > 0,
             "Brand is not registered"
         );
-        ContentManager(msg.sender).commentContent(_contentId);
+        contentManager.commentContent(_contentId);
         contentCreatorToken.transfer(
-            ContentManager(msg.sender).owner(_contentId),
+            contentManager.owner(_contentId),
             brands[msg.sender].contentFeePerComment
         );
     }

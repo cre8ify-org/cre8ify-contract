@@ -1,11 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-/**
-This contract handles the content management features of the platform. 
-Users can upload, update, and delete their content, and other users can view, like, and comment on the content. 
-The contract also tracks the number of views, likes, and comments for each piece of content, and rewards the content creator with tokens based on the engagement */
-
 import "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import "openzeppelin-contracts/contracts/access/Ownable.sol";
 
@@ -44,34 +39,40 @@ contract ContentManager is Ownable {
     }
 
     function updateContent(uint256 _index, string memory _ipfsHash) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         Content storage content = userContent[msg.sender][_index];
         content.ipfsHash = _ipfsHash;
         content.updatedAt = block.timestamp;
     }
 
     function deleteContent(uint256 _index) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         delete userContent[msg.sender][_index];
     }
 
     function viewContent(uint256 _index) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         Content storage content = userContent[msg.sender][_index];
         content.views++;
         contentCreatorToken.transfer(msg.sender, 10 * 10 ** 18);
     }
 
     function likeContent(uint256 _index) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         Content storage content = userContent[msg.sender][_index];
         content.likes++;
         contentCreatorToken.transfer(msg.sender, 5 * 10 ** 18);
     }
 
     function commentContent(uint256 _index) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         Content storage content = userContent[msg.sender][_index];
         content.comments++;
         contentCreatorToken.transfer(msg.sender, 3 * 10 ** 18);
     }
 
     function inviteCollaborator(uint256 _index, address _collaborator) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         Content storage content = userContent[msg.sender][_index];
         require(!content.hasCollaborated[_collaborator], "Collaborator already added");
         content.collaborators.push(_collaborator);
@@ -79,6 +80,7 @@ contract ContentManager is Ownable {
     }
 
     function removeCollaborator(uint256 _index, address _collaborator) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         Content storage content = userContent[msg.sender][_index];
         require(content.hasCollaborated[_collaborator], "Collaborator not found");
         for (uint256 i = 0; i < content.collaborators.length; i++) {
@@ -92,6 +94,7 @@ contract ContentManager is Ownable {
     }
 
     function distributeRevenueToCollaborators(uint256 _index) public {
+        require(_index < userContent[msg.sender].length, "Content not found");
         Content storage content = userContent[msg.sender][_index];
         uint256 totalRevenue = contentCreatorToken.balanceOf(address(this));
         uint256 revenuePerCollaborator = totalRevenue / (content.collaborators.length + 1);

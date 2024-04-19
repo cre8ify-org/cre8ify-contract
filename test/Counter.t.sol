@@ -120,3 +120,4 @@ contract ContentManagerTest is Test {
     function testDistributeRevenueToCollaborators() public {
         // Upload some content
         contentManager.uploadContent("
+        

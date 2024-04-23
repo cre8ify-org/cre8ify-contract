@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import  {Test} from  "forge-std/Test.sol";
+import "forge-std/Test.sol";
 import "../src/Subscription.sol";
 import "../src/DAO.sol";
 import "../src/Content.sol";
@@ -9,8 +9,8 @@ import "../src/Authorization.sol";
 import "../src/Analytics.sol";
 import "../src/Token.sol";
 
-contract TestContract is Test  {
-   Subscription public subscriptionContract;
+contract Test {
+    Subscription public subscriptionContract;
     DAO public daoContract;
     Content public contentContract;
     Authorization public authorizationContract;
@@ -28,7 +28,7 @@ contract TestContract is Test  {
 
         tokenContract = new Token("Token", "TKN", 1000000, 10);
         subscriptionContract = new Subscription(address(tokenContract));
-        contentContract = new Content(address(subscriptionContract), address(daoContract));
+        contentContract = new Content(address(subscriptionContract));
         daoContract = new DAO(address(contentContract), address(tokenContract));
         authorizationContract = new Authorization();
         analyticsContract = new Analytics();
@@ -56,11 +56,11 @@ contract TestContract is Test  {
 
         // Test vote function
         daoContract.vote(1, true);
-        assertEq(daoContract.getYesVotes(1), 1);
+        assertEq(daoContract.proposals(1).votes, 1);
 
         // Test executeProposal function
         daoContract.executeProposal(1, DAO.ProposalType.ContentModeration);
-  assertTrue(daoContract.isProposalExecuted(1));
+        assertTrue(daoContract.proposals(1).executed);
     }
 
     function testContent() public {
@@ -70,7 +70,7 @@ contract TestContract is Test  {
 
         // Test monetizeContent function
         contentContract.monetizeContent(1);
-      assertTrue(contentContract.isContentMonetized(1));
+        assertTrue(contentContract.contents(1).isMonetized);
 
         // Test viewContent function
         contentContract.viewContent(1);
@@ -112,4 +112,55 @@ contract TestContract is Test  {
         tokenContract.mint(user1, 10);
         assertEq(tokenContract.balanceOf(user1), 10);
     }
+}
+
+
+
+
+
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+import "./Authorization.sol";
+import "./Content.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+contract DAO is Ownable, Authorization {
+    struct Proposal {
+        uint256 id;
+        string description;
+        address creator;
+        bool executed;
+        uint256 yesVotes;
+        bool isExecuted;
+        uint256 startTimestamp;
+        uint256 noVotes;
+        uint256 expirationTime;
+        uint256 endTimestamp;
+        bool isMonetized; // Add this line
+    }
+
+    enum ProposalType { ContentModeration, UserModeration, TreasuryManagement, ParameterChange }
+
+    mapping(uint256 => Proposal) public proposals;
+    mapping (uint256 => mapping(address => bool)) hasVoted;
+
+    uint256 public proposalCount;
+    uint256 public quorum;
+    uint256 public minVotesRequired;
+    uint256 public proposalDuration;
+    
+    Content public contentContract;
+    IERC20 public token;
+
+    constructor(address _contentContract, address _tokenAddress) {
+        contentContract = Content(_contentContract);
+        token = IERC20(_tokenAddress);
+        quorum = 20; 
+        minVotesRequired = 5; 
+        proposalDuration = 7 days;
+    }
+
+    // ... rest of the contract remains the same ...
 }

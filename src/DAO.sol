@@ -6,7 +6,7 @@ import "./Content.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract DAO is Ownable, Authorization {
+ contract DAO is Ownable, Authorization {
     struct Proposal {
         uint256 id;
         string description;
@@ -34,13 +34,14 @@ contract DAO is Ownable, Authorization {
     Content public contentContract;
     IERC20 public token;
 
-    constructor(address _contentContract, address _tokenAddress) {
-        contentContract = Content(_contentContract);
-        token = IERC20(_tokenAddress);
-        quorum = 20; 
-        minVotesRequired = 5; 
-        proposalDuration = 7 days;
-    }
+ constructor(address initialOwner, address _contentContract, address _tokenAddress) Ownable(initialOwner) {
+    contentContract = Content(_contentContract);
+    token = IERC20(_tokenAddress);
+    quorum = 20; 
+    minVotesRequired = 5; 
+    proposalDuration = 7 days;
+}
+  
     event ProposalSubmitted(uint256 id, string description, address creator, ProposalType proposalType);
     event Voted(uint256 id, address voter);
     event ProposalExecuted(uint256 id, ProposalType proposalType, bool executed);
@@ -50,21 +51,25 @@ contract DAO is Ownable, Authorization {
     event ParameterChanged(string parameter, uint256 newValue);
 
     // Submit proposal for DAO consideration
-    function submitProposal(string memory _description, ProposalType _proposalType) public onlyRegistered {
-        require(_proposalType != ProposalType.ParameterChange, "Invalid proposal type");
-        proposalCount++;
-        proposals[proposalCount] = Proposal({
-            id: proposalCount,
-            description: _description,
-            creator: msg.sender,
-            executed: false,
-            yesVotes: 0,
-            noVotes: 0,
-            expirationTime: block.timestamp + proposalDuration
-        });
+   function submitProposal(string memory _description, ProposalType _proposalType) public onlyRegistered {
+    require(_proposalType != ProposalType.ParameterChange, "Invalid proposal type");
+    proposalCount++;
+    proposals[proposalCount] = Proposal({
+        id: proposalCount,
+        description: _description,
+        creator: msg.sender,
+        executed: false,
+        yesVotes: 0,
+        isExecuted: false,
+        startTimestamp: block.timestamp,
+        noVotes: 0,
+        expirationTime: block.timestamp + proposalDuration,
+        endTimestamp: 0,
+        isMonetized: false
+    });
 
-        emit ProposalSubmitted(proposalCount, _description, msg.sender, _proposalType);
-    }
+    emit ProposalSubmitted(proposalCount, _description, msg.sender, _proposalType);
+}
 
     // Vote on proposal
     function vote(uint256 _proposalId, bool _vote) public onlyRegistered {
@@ -144,11 +149,11 @@ contract DAO is Ownable, Authorization {
         transferOwnership(_newOwner);
     }
 
-    function emergencyWithdrawTokens(address _tokenAddress, address _to, uint256 _amount) public onlyOwner {
-        IERC20 token = IERC20(_tokenAddress);
-        require(token.balanceOf(address(this)) >= _amount, "Insufficient balance");
-        token.transfer(_to, _amount);
-    }
+    // function emergencyWithdrawTokens(address _tokenAddress, address _to, uint256 _amount) public onlyOwner {
+    //     IERC20 token = IERC20(_tokenAddress);
+    //     require(token.balanceOf(address(this)) >= _amount, "Insufficient balance");
+    //     token.transfer(_to, _amount);
+    // }
 
     function withdrawEther(address payable _to, uint256 _amount) public onlyOwner {
         require(address(this).balance >= _amount, "Insufficient ETH balance");

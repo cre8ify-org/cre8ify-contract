@@ -10,16 +10,18 @@ contract Content is Ownable {
         string title;
         uint256 id;
         uint256 dateCreated;
-        address creator;
+        string creatorProfile; // Changed from address to string
         string ipfsHash;
+          address creator;
         bool isDeleted;
         bool isMonetized;
         uint256 views;
         uint256 likes;
         uint256 rating;
+        string contentType; // Added content type
     }
 
-    mapping(uint256 => ContentItem) public contents;
+       mapping(uint256 => ContentItem) public contents;
     mapping(address => ContentItem[]) private userContentTracker;
 
     ContentItem[] contentsArray;
@@ -29,21 +31,22 @@ contract Content is Ownable {
     Analytics public analyticsContract;
     Authorization public authorizationContract;
 
-    constructor(address _analyticsContract, address _authorizationContract) Ownable(msg.sender) {
+   constructor(address _analyticsContract, address _authorizationContract) Ownable(msg.sender) {
         analyticsContract = Analytics(_analyticsContract);
         authorizationContract = Authorization(_authorizationContract);
     }
 
-    event ContentCreated(uint256 id, string title, address indexed creator);
-    event ContentMonetized(uint256 id, address indexed creator);
+    event ContentCreated(uint256 id, string title, string creatorProfile);
+    event ContentMonetized(uint256 id, string creatorProfile);
     event ContentViewed(uint256 id);
     event ContentLiked(uint256 id);
     event ContentShared(uint256 id, address indexed sharer);
     event ContentDeleted(uint256 id);
     event ContentTransferred(uint256 id, address indexed newOwner);
 
+
     // Create content
-    function createContent(string memory _title, string memory _ipfsHash) public {
+     function createContent(string memory _title, string memory _ipfsHash, string memory _contentType) public {
         (string memory username, address creatorAddress, string memory profileImage) = authorizationContract.getUserDetails(msg.sender);
 
         contentCount++;
@@ -51,13 +54,15 @@ contract Content is Ownable {
             title: _title,
             id: contentCount,
             dateCreated: block.timestamp,
-            creator: creatorAddress,
+             creator: msg.sender,
+            creatorProfile: username, // Changed from msg.sender to username
             ipfsHash: _ipfsHash,
             isDeleted: false,
             isMonetized: false,
             views: 0,
             likes: 0,
-            rating: 0
+            rating: 0,
+            contentType: _contentType // Added content type
         });
 
         contents[contentCount] = newContent;
@@ -66,17 +71,18 @@ contract Content is Ownable {
 
         userContentTracker[msg.sender].push(newContent);
 
-        emit ContentCreated(contentCount, _title, creatorAddress);
+        emit ContentCreated(contentCount, _title, username);
     }
 
     // Monetize content
-    function monetizeContent(uint256 _id) public {
-        require(contents[_id].creator == msg.sender, "You are not the creator");
-        require(!contents[_id].isMonetized, "Content is already monetized");
-        
-        contents[_id].isMonetized = true;
-        emit ContentMonetized(_id, msg.sender);
-    }
+function monetizeContent(uint256 _id) public {
+    (string memory username, , ) = authorizationContract.getUserDetails(msg.sender);
+    string memory creatorProfile = contents[_id].creatorProfile;
+    require(keccak256(abi.encodePacked(creatorProfile)) == keccak256(abi.encodePacked(username)), "You are not the creator");
+    require(!contents[_id].isMonetized, "Content is already monetized");
+    contents[_id].isMonetized = true;
+    emit ContentMonetized(_id, username);
+}
 
     // View content
     function viewContent(uint256 _id) public {
@@ -98,10 +104,11 @@ contract Content is Ownable {
     }
 
     // Transfer content ownership (only owner can transfer)
-    function transferContent(uint256 _id, address _newOwner) public onlyOwner {
-        contents[_id].creator = _newOwner;
-        emit ContentTransferred(_id, _newOwner);
-    }
+ function transferContent(uint256 _id, address _newOwner) public onlyOwner {
+    (string memory newUsername, , ) = authorizationContract.getUserDetails(_newOwner);
+    contents[_id].creatorProfile = newUsername;
+    emit ContentTransferred(_id, _newOwner);
+}
 
     // Delete content (only owner can delete)
     function deleteContent(uint256 _id) public onlyOwner {
@@ -114,10 +121,10 @@ contract Content is Ownable {
         return contents[_id].views + contents[_id].likes + contents[_id].rating;
     }
 
-    function withdrawReward(uint256 _id) public {
-        uint256 reward = calculateReward(_id);
-        payable(contents[_id].creator).transfer(reward);
-    }
+function withdrawReward(uint256 _id) public {
+    uint256 reward = calculateReward(_id);
+    payable(contents[_id].creator).transfer(reward);
+}
 
     // Function to get user's content
     function getUserContents(address _user) public view returns (ContentItem[] memory) {

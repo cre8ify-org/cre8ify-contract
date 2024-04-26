@@ -172,4 +172,3 @@ $ forge create --rpc-url <your_rpc_url> \
     --etherscan-api-key <your_etherscan_api_key> \
     --verify \
     src/MyToken.sol:MyToken
- forge create --rpc-url https://optimism-sepolia.infura.io/v3/34df99fbbd624cdb80e4e8b6cc29f4d6 --constructor-args "ForgeUSD" "FUSD" 1000000 100  --private-key 40da69b025239379deb455b310e59308fdc37050726c942ba4641c1a4131430b --etherscan-api-key 2KYQ7ZWI7FF69JQ8HSTFIRYKI4CUPP899X --verify src/Token.sol:Token --via-ir

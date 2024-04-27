@@ -24,7 +24,7 @@ contract Content is Ownable {
     mapping(uint256 => ContentItem) public contents;
     mapping(address => ContentItem[]) private userContentTracker;
 
-    //Reward system variables
+    //Reward system variable
     uint256 public tokenRewardPerView = 1; 
     uint256 public tokenRewardPerLike = 5; 
     uint256 public tokenRewardPerShare = 10; 

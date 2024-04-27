@@ -172,3 +172,4 @@ $ forge create --rpc-url <your_rpc_url> \
     --etherscan-api-key <your_etherscan_api_key> \
     --verify \
     src/MyToken.sol:MyToken
+    man

@@ -144,7 +144,8 @@ contract Content is Ownable {
         contents[_id].isDeleted = true;
         emit ContentDeleted(_id);
     }
-// Calculate reward function
+
+ // Calculate reward function
 function calculateReward(uint256 _id) public view returns (uint256) {
     ContentItem memory content = contents[_id];
     uint256 viewsReward = content.views * tokenRewardPerView;

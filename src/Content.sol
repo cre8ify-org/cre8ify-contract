@@ -24,7 +24,6 @@ contract Content is Ownable {
     mapping(uint256 => ContentItem) public contents;
     mapping(address => ContentItem[]) private userContentTracker;
 
-    //Reward system variable
     uint256 public tokenRewardPerView = 1; 
     uint256 public tokenRewardPerLike = 5; 
     uint256 public tokenRewardPerShare = 10; 
@@ -57,7 +56,6 @@ contract Content is Ownable {
     event ContentDeleted(uint256 id);
     event ContentTransferred(uint256 id, address indexed newOwner);
 
-    // Create content
     function createContent(
         string memory _title,
         string memory _ipfsHash,
@@ -92,7 +90,6 @@ contract Content is Ownable {
         emit ContentCreated(contentCount, _title, username);
     }
 
-    // Monetize content
     function monetizeContent(uint256 _id) public {
         (string memory username, , ) = authorizationContract.getUserDetails(
             msg.sender
@@ -108,7 +105,6 @@ contract Content is Ownable {
         emit ContentMonetized(_id, username);
     }
 
-    // View content
     function viewContent(uint256 _id) public {
         contents[_id].views++;
         emit ContentViewed(_id);
@@ -116,7 +112,6 @@ contract Content is Ownable {
         userRewards[contents[_id].creator] += tokenRewardPerView;
     }
 
-    // Like content
     function likeContent(uint256 _id) public {
         contents[_id].likes++;
         emit ContentLiked(_id);
@@ -124,13 +119,11 @@ contract Content is Ownable {
         userRewards[contents[_id].creator] += tokenRewardPerLike;
     }
 
-    // Share content
     function shareContent(uint256 _id) public {
         emit ContentShared(_id, msg.sender);
         userRewards[contents[_id].creator] += tokenRewardPerShare;
     }
 
-    // Transfer content ownership (only owner can transfer)
     function transferContent(uint256 _id, address _newOwner) public onlyOwner {
         (string memory newUsername, , ) = authorizationContract.getUserDetails(
             _newOwner
@@ -139,13 +132,11 @@ contract Content is Ownable {
         emit ContentTransferred(_id, _newOwner);
     }
 
-    // Delete content (only owner can delete)
     function deleteContent(uint256 _id) public onlyOwner {
         contents[_id].isDeleted = true;
         emit ContentDeleted(_id);
     }
 
- // Calculate reward function
 function calculateReward(uint256 _id) public view returns (uint256) {
     ContentItem memory content = contents[_id];
     uint256 viewsReward = content.views * tokenRewardPerView;

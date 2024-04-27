@@ -10,19 +10,29 @@ contract Content is Ownable {
         string title;
         uint256 id;
         uint256 dateCreated;
-        string creatorProfile; // Changed from address to string
+        string creatorProfile;
         string ipfsHash;
-          address creator;
+        address creator;
         bool isDeleted;
         bool isMonetized;
         uint256 views;
         uint256 likes;
-        uint256 rating;
-        string contentType; // Added content type
+        uint256 shares;
+        string contentType;
     }
 
-       mapping(uint256 => ContentItem) public contents;
+    mapping(uint256 => ContentItem) public contents;
     mapping(address => ContentItem[]) private userContentTracker;
+
+    //Reward system variables
+    uint256 public tokenRewardPerView = 1; 
+    uint256 public tokenRewardPerLike = 5; 
+    uint256 public tokenRewardPerShare = 10; 
+    uint256 public payoutThreshold = 100; 
+
+    mapping(address => uint256) public userRewards; 
+    uint256 public cooldownDuration = 1 days; 
+    mapping(address => uint256) public lastRewardClaim; 
 
     ContentItem[] contentsArray;
 
@@ -31,7 +41,10 @@ contract Content is Ownable {
     Analytics public analyticsContract;
     Authorization public authorizationContract;
 
-   constructor(address _analyticsContract, address _authorizationContract) Ownable(msg.sender) {
+    constructor(
+        address _analyticsContract,
+        address _authorizationContract
+    ) Ownable(msg.sender) {
         analyticsContract = Analytics(_analyticsContract);
         authorizationContract = Authorization(_authorizationContract);
     }
@@ -44,25 +57,30 @@ contract Content is Ownable {
     event ContentDeleted(uint256 id);
     event ContentTransferred(uint256 id, address indexed newOwner);
 
-
     // Create content
-     function createContent(string memory _title, string memory _ipfsHash, string memory _contentType) public {
-        (string memory username, address creatorAddress, string memory profileImage) = authorizationContract.getUserDetails(msg.sender);
+    function createContent(
+        string memory _title,
+        string memory _ipfsHash,
+        string memory _contentType
+    ) public {
+        (string memory username, , ) = authorizationContract.getUserDetails(
+            msg.sender
+        ); 
 
         contentCount++;
         ContentItem memory newContent = ContentItem({
             title: _title,
             id: contentCount,
             dateCreated: block.timestamp,
-             creator: msg.sender,
-            creatorProfile: username, // Changed from msg.sender to username
+            creator: msg.sender,
+            creatorProfile: username, 
             ipfsHash: _ipfsHash,
             isDeleted: false,
             isMonetized: false,
             views: 0,
             likes: 0,
-            rating: 0,
-            contentType: _contentType // Added content type
+            shares: 0,
+            contentType: _contentType 
         });
 
         contents[contentCount] = newContent;
@@ -75,20 +93,27 @@ contract Content is Ownable {
     }
 
     // Monetize content
-function monetizeContent(uint256 _id) public {
-    (string memory username, , ) = authorizationContract.getUserDetails(msg.sender);
-    string memory creatorProfile = contents[_id].creatorProfile;
-    require(keccak256(abi.encodePacked(creatorProfile)) == keccak256(abi.encodePacked(username)), "You are not the creator");
-    require(!contents[_id].isMonetized, "Content is already monetized");
-    contents[_id].isMonetized = true;
-    emit ContentMonetized(_id, username);
-}
+    function monetizeContent(uint256 _id) public {
+        (string memory username, , ) = authorizationContract.getUserDetails(
+            msg.sender
+        );
+        string memory creatorProfile = contents[_id].creatorProfile;
+        require(
+            keccak256(abi.encodePacked(creatorProfile)) ==
+                keccak256(abi.encodePacked(username)),
+            "You are not the creator"
+        );
+        require(!contents[_id].isMonetized, "Content is already monetized");
+        contents[_id].isMonetized = true;
+        emit ContentMonetized(_id, username);
+    }
 
     // View content
     function viewContent(uint256 _id) public {
         contents[_id].views++;
         emit ContentViewed(_id);
         analyticsContract.trackView(_id);
+        userRewards[contents[_id].creator] += tokenRewardPerView;
     }
 
     // Like content
@@ -96,87 +121,34 @@ function monetizeContent(uint256 _id) public {
         contents[_id].likes++;
         emit ContentLiked(_id);
         analyticsContract.trackLike(_id);
+        userRewards[contents[_id].creator] += tokenRewardPerLike;
     }
 
     // Share content
     function shareContent(uint256 _id) public {
         emit ContentShared(_id, msg.sender);
+        userRewards[contents[_id].creator] += tokenRewardPerShare;
     }
 
     // Transfer content ownership (only owner can transfer)
- function transferContent(uint256 _id, address _newOwner) public onlyOwner {
-    (string memory newUsername, , ) = authorizationContract.getUserDetails(_newOwner);
-    contents[_id].creatorProfile = newUsername;
-    emit ContentTransferred(_id, _newOwner);
-}
+    function transferContent(uint256 _id, address _newOwner) public onlyOwner {
+        (string memory newUsername, , ) = authorizationContract.getUserDetails(
+            _newOwner
+        );
+        contents[_id].creatorProfile = newUsername;
+        emit ContentTransferred(_id, _newOwner);
+    }
 
     // Delete content (only owner can delete)
     function deleteContent(uint256 _id) public onlyOwner {
         contents[_id].isDeleted = true;
         emit ContentDeleted(_id);
     }
-
-    // Reward calculation and withdrawal
-    function calculateReward(uint256 _id) public view returns (uint256) {
-        return contents[_id].views + contents[_id].likes + contents[_id].rating;
-    }
-
-function withdrawReward(uint256 _id) public {
-    uint256 reward = calculateReward(_id);
-    payable(contents[_id].creator).transfer(reward);
-}
-
-    // Function to get user's content
-    function getUserContents(address _user) public view returns (ContentItem[] memory) {
-        return userContentTracker[_user];
-    }
-
-    // Function to fetch 20 contents
-    function fetchContents(uint256 _lastContentId, uint256[] memory _tracker )
-        public
-        view
-        returns (uint256[] memory, ContentItem[] memory)
-    {
-        uint256[] memory ids = new uint256[](20);
-        ContentItem[] memory returnedContents = new ContentItem[](20);
-        uint256[] memory newTracker = new uint256[](20);
-
-        uint256 newContentsCount = 0;
-        uint256 randomContentsCount = 0;
-
-        // Fetch newest 10 contents
-        for (uint256 i = contentCount; i > _lastContentId && newContentsCount < 10; i--) {
-            ids[newContentsCount] = contents[i].id;
-            returnedContents[newContentsCount] = contents[i];
-            newTracker[newContentsCount] = i;
-            newContentsCount++;
-        }
-
-        // Fetch 10 pseudo-random contents
-        while (randomContentsCount < 10) {
-            uint256 randomId = (uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, randomContentsCount))) % contentCount) + 1;
-            
-            bool contentShown = false;
-            for (uint256 j = 0; j < _tracker.length; j++) {
-                if (_tracker[j] == randomId) {
-                    contentShown = true;
-                    break;
-                }
-            }
-
-            if (!contentShown && randomId != 0) {
-                ids[newContentsCount + randomContentsCount] = contents[randomId].id;
-                returnedContents[newContentsCount + randomContentsCount] = contents[randomId];
-                newTracker[newContentsCount + randomContentsCount] = randomId;
-                randomContentsCount++;
-            }
-        }
-
-        return (newTracker, returnedContents);
-    }
-
-    function isContentMonetized(uint256 contentId) public view returns (bool) {
-    return contents[contentId].isMonetized;
-}
-    
-}
+// Calculate reward function
+function calculateReward(uint256 _id) public view returns (uint256) {
+    ContentItem memory content = contents[_id];
+    uint256 viewsReward = content.views * tokenRewardPerView;
+    uint256 likesReward = content.likes * tokenRewardPerLike;
+    uint256 sharesReward = content.shares * tokenRewardPerShare;
+    return viewsReward + likesReward + sharesReward;
+}}

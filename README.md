@@ -1,19 +1,29 @@
-## Foundry
+# Content Creator Platform
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A blockchain-based social network that grants content creators full control over their data, interactions, and monetization strategies.
 
-Foundry consists of:
+## Features
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- Decentralized Ownership and Control
+- Creator Control Tools
+- Tokenization of Assets and Interactions
+- Customizable Engagement Tools
+- Enhanced Privacy and Security Features
+- Governance and Community-Led Decisions
 
-## Documentation
+## Run Locally
 
-https://book.getfoundry.sh/
+Clone the project
 
-## Usage
+```shell
+  git clone https://github.com/Content-Creater-Platform/CCP-Contract.git
+```
+
+### Install
+
+```shell
+$ forge install
+```
 
 ### Build
 
@@ -27,40 +37,12 @@ $ forge build
 $ forge test
 ```
 
-### Format
+## 🤝 Contributing
 
-```shell
-$ forge fmt
-```
+Contributions, issues, and feature requests are welcome!
 
-### Gas Snapshots
+Feel free to check the [issues page](https://github.com/Content-Creater-Platform/CCP-Contract/issues) here 😏😏.
 
-```shell
-$ forge snapshot
-```
+## Show your support
 
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Give a ⭐️ if you like this project!

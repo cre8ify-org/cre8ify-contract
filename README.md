@@ -11,6 +11,10 @@ A blockchain-based social network that grants content creators full control over
 - Enhanced Privacy and Security Features
 - Governance and Community-Led Decisions
 
+[Documentation](/Documentation.md)
+
+The documentation provided encompasses a comprehensive outline a Business Plan, detailing the CCP's mission, market analysis, innovative solutions, revenue models, marketing strategies, etc.
+
 ## Run Locally
 
 Clone the project

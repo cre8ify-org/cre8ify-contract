@@ -174,6 +174,18 @@ contract CCP {
         emit ContentMonetized(_id, msg.sender);
     }
 
+    function deleteContent(uint256 _id) public onlyRegistered onlySubscriber {
+        address creatorProfile = appVars.contents[_id].creator;
+        require(
+            creatorProfile == msg.sender,
+            "You are not the creator"
+        );
+        require(!appVars.contents[_id].isDeleted, "Content is already deleted");
+        appVars.contents[_id].isDeleted = true;
+        appVars.contentsArray[_id].isDeleted = true;
+        emit ContentMonetized(_id, msg.sender);
+    }
+
     function demonetizeContent(uint256 _id) public onlyRegistered {
         address creatorProfile = appVars.contents[_id].creator;
         require(
@@ -311,6 +323,8 @@ contract CCP {
     }
 
     function getContent(uint256 _id) public view returns(ContentItem memory){
+        require(!(appVars.contentsArray[_id].isDeleted), "Content already deleted");
+
         return appVars.contentsArray[_id];
     }
 

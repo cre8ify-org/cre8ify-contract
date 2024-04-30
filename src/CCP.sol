@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import "./Authorization.sol";
 import "./Analytics.sol";
+import "./Subscription.sol";
 
 contract CCP {
     // Maximum score a creator can achieve
@@ -36,6 +37,8 @@ contract CCP {
 
     Authorization public authorizationContract;
     Analytics public analyticsContract;
+    Subscription public subscriptionContract;
+
 
     struct User {
         string username;
@@ -94,9 +97,10 @@ contract CCP {
     
     vars appVars;
 
-    constructor(address _authorization, address _analytic) {
+    constructor(address _authorization, address _analytic, address _subscription) {
         authorizationContract = Authorization(_authorization);
         analyticsContract = Analytics(_analytic);
+        subscriptionContract = Subscription(_subscription);
     }
 
     event ContentCreated(uint256 indexed id, string indexed creatorProfile, uint256  indexed timestamp);
@@ -110,7 +114,12 @@ contract CCP {
     event CreatorRated(address indexed creator, uint256 indexed timestamp, uint256 rating);
 
     modifier onlyRegistered() {
-        require(authorizationContract.isRegistered(msg.sender), "User is not registered");
+        require(authorizationContract.registeredUsers(msg.sender), "User is not registered");
+        _;
+    }
+
+    modifier onlySubscriber() {
+        require(subscriptionContract.isUserSubscribed(msg.sender), "User is not subscribed or subscription expired");
         _;
     }
 
@@ -153,7 +162,7 @@ contract CCP {
         emit ContentCreated(appVars.contentCount, username, block.timestamp);
     }
 
-    function monetizeContent(uint256 _id) public onlyRegistered {
+    function monetizeContent(uint256 _id) public onlyRegistered onlySubscriber {
         address creatorProfile = appVars.contents[_id].creator;
         require(
             creatorProfile == msg.sender,

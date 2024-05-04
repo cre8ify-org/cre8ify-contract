@@ -10,6 +10,8 @@ contract Authorization {
 
     mapping(address => User) public userDetails;
     mapping(address => bool) public registeredUsers;
+    mapping(string => address) public usernameAddressTracker;
+
     address[] public registeredUserAddresses; // Array to store registered user addresses
 
     event UserRegistered(address indexed user, string username, string profileImage);
@@ -24,6 +26,7 @@ contract Authorization {
     // Register user with their wallet address, username, and profileImage
     function registerUser(string memory _username, string memory _profileImage) public {
         require(!registeredUsers[msg.sender], "User is already registered");
+        require(usernameAddressTracker[_username] == address(0), "Username is already taken");
         
         User memory newUser = User({
             username: _username,
@@ -34,6 +37,7 @@ contract Authorization {
         userDetails[msg.sender] = newUser;
         registeredUsers[msg.sender] = true;
         registeredUserAddresses.push(msg.sender); // Add user address to the array
+        usernameAddressTracker[_username] = msg.sender;
         
         emit UserRegistered(msg.sender, _username, _profileImage);
     }
@@ -46,12 +50,7 @@ contract Authorization {
 
     // Get user address by username
     function getUserAddress(string memory _username) public view returns (address) {
-        for (uint256 i = 0; i < registeredUserAddresses.length; i++) {
-            if (keccak256(abi.encodePacked(userDetails[registeredUserAddresses[i]].username)) == keccak256(abi.encodePacked(_username))) {
-                return registeredUserAddresses[i];
-            }
-        }
-        return address(0);
+        return usernameAddressTracker[_username];
     }
 
     // Get all registered users
@@ -61,9 +60,14 @@ contract Authorization {
 
     // Edit creator profile
     function editProfile(string memory _newUsername, string memory _newProfileImage) public onlyRegistered {
+        require(usernameAddressTracker[_newUsername] == address(0), "Username is already taken");
         User storage user = userDetails[msg.sender];
+        usernameAddressTracker[user.username] = address(0);
+        usernameAddressTracker[_newUsername] = msg.sender;
+
         user.username = _newUsername;
         user.profileImage = _newProfileImage;
+        
         emit ProfileEdited(msg.sender, _newUsername, _newProfileImage);
     }
 }

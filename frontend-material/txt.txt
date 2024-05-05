@@ -1,11 +1,18 @@
-
-Token Address: 0x253698a610Ef999fAC8122ca547F30099412a688
-Authorization Address: 0x0Deb703179Fc41a61b993324c334187de7547e34
-Analytics Address: 0x01D3638fAebC02771EF4EF930Cb0E66971A062cC
-Content Address: 0xf394F79afa896fa17cc5F8369aB72F6126F55D9b
-Subscription Address: 0x26c2dF72eD83e461E1644AD686Cba59CA65ff66d
+Token Address: 0xaC6566A4051205EBd33103A7eAa374c388e8b568
+Authorization Address: 0x57119bDAEc3C4BEa152f394903E13ab69d7b0C34
+Analytics Address: 0xe7fD35631b5eabd401D43bc352AdB01341292475
+Content Address: 0xbFFA630c8C131d06348E4a6F8Eddc09eE6FdA736
 DAO Address: 0x1ddBc0fe9AAAd5497c03212D088aFBe1F69DFe0c
 
+Verified
+Analytics Address: 0x3fC55568c3146c62930B4A8d74b9764A87a53412
+Authorization Address: 0xe45cEDc0022A206d201C6aD737985FF7305d3231
+Token Address: 0x2ACBdD67f4F4ABD211F0B30b0544B9efb17B658C
+Subscription Address: 0x84cE0f74cF0e197F8CF7b4A59e5D8D2dBDAC387A
+Content Address: 0xf076FFa1dc4BEeB5a8069053150AF484246702bf
 
+Queries (HTTP):     https://api.studio.thegraph.com/query/72160/cct/v1.0.0
 
-CONTRACT ADDRESSESS
+Verification Command
+forge script script/CCP.s.sol:CCPScript --rpc-url $RPC_URL --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify -vvvv
+

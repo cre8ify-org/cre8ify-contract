@@ -6,16 +6,63 @@
                 "name": "_tokenAddress",
                 "type": "address",
                 "internalType": "address"
+            },
+            {
+                "name": "_vaultAddress",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "_authorization",
+                "type": "address",
+                "internalType": "address"
             }
         ],
         "stateMutability": "nonpayable"
     },
     {
         "type": "function",
-        "name": "getSubscriptionPackage",
+        "name": "authorizationContract",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "contract IAuthorization"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "checkSubscribtionToCreatorStatus",
         "inputs": [
             {
-                "name": "_user",
+                "name": "_creator",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "_subscriber",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool",
+                "internalType": "bool"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "creatorSubscriptionAmount",
+        "inputs": [
+            {
+                "name": "",
                 "type": "address",
                 "internalType": "address"
             }
@@ -25,6 +72,68 @@
                 "name": "",
                 "type": "uint256",
                 "internalType": "uint256"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "fetchSubscribedTo",
+        "inputs": [
+            {
+                "name": "_subscriber",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple[]",
+                "internalType": "struct Subscription.User[]",
+                "components": [
+                    {
+                        "name": "username",
+                        "type": "string",
+                        "internalType": "string"
+                    },
+                    {
+                        "name": "walletAddress",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
+        "type": "function",
+        "name": "fetchSubscribers",
+        "inputs": [
+            {
+                "name": "_creator",
+                "type": "address",
+                "internalType": "address"
+            }
+        ],
+        "outputs": [
+            {
+                "name": "",
+                "type": "tuple[]",
+                "internalType": "struct Subscription.User[]",
+                "components": [
+                    {
+                        "name": "username",
+                        "type": "string",
+                        "internalType": "string"
+                    },
+                    {
+                        "name": "walletAddress",
+                        "type": "address",
+                        "internalType": "address"
+                    }
+                ]
             }
         ],
         "stateMutability": "view"
@@ -50,10 +159,15 @@
     },
     {
         "type": "function",
-        "name": "isUserSubscribed",
+        "name": "isSubscribedToCreator",
         "inputs": [
             {
-                "name": "_user",
+                "name": "",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "",
                 "type": "address",
                 "internalType": "address"
             }
@@ -69,29 +183,32 @@
     },
     {
         "type": "function",
-        "name": "subscribe12Months",
-        "inputs": [],
+        "name": "setMonthlySubscriptionAmount",
+        "inputs": [
+            {
+                "name": "_amount",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
         "outputs": [],
         "stateMutability": "nonpayable"
     },
     {
         "type": "function",
-        "name": "subscribeOneMonth",
-        "inputs": [],
-        "outputs": [],
-        "stateMutability": "nonpayable"
-    },
-    {
-        "type": "function",
-        "name": "subscribeSixMonths",
-        "inputs": [],
-        "outputs": [],
-        "stateMutability": "nonpayable"
-    },
-    {
-        "type": "function",
-        "name": "subscribeThreeMonths",
-        "inputs": [],
+        "name": "subscribeToCreator",
+        "inputs": [
+            {
+                "name": "_creator",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "_amount",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
         "outputs": [],
         "stateMutability": "nonpayable"
     },
@@ -116,8 +233,13 @@
     },
     {
         "type": "function",
-        "name": "subscriptionType",
+        "name": "subscriptionToCreatorExpiry",
         "inputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "address"
+            },
             {
                 "name": "",
                 "type": "address",
@@ -135,6 +257,24 @@
     },
     {
         "type": "function",
+        "name": "tipCreator",
+        "inputs": [
+            {
+                "name": "_creator",
+                "type": "address",
+                "internalType": "address"
+            },
+            {
+                "name": "amount",
+                "type": "uint256",
+                "internalType": "uint256"
+            }
+        ],
+        "outputs": [],
+        "stateMutability": "nonpayable"
+    },
+    {
+        "type": "function",
         "name": "token",
         "inputs": [],
         "outputs": [
@@ -147,36 +287,30 @@
         "stateMutability": "view"
     },
     {
+        "type": "function",
+        "name": "vault",
+        "inputs": [],
+        "outputs": [
+            {
+                "name": "",
+                "type": "address",
+                "internalType": "contract IVault"
+            }
+        ],
+        "stateMutability": "view"
+    },
+    {
         "type": "event",
         "name": "Subscribed",
         "inputs": [
             {
-                "name": "user",
+                "name": "creator",
                 "type": "address",
                 "indexed": true,
                 "internalType": "address"
             },
             {
-                "name": "expiry",
-                "type": "uint256",
-                "indexed": false,
-                "internalType": "uint256"
-            },
-            {
-                "name": "subsciptionPackage",
-                "type": "uint256",
-                "indexed": false,
-                "internalType": "uint256"
-            }
-        ],
-        "anonymous": false
-    },
-    {
-        "type": "event",
-        "name": "SubscriptionExtended",
-        "inputs": [
-            {
-                "name": "user",
+                "name": "subscriber",
                 "type": "address",
                 "indexed": true,
                 "internalType": "address"

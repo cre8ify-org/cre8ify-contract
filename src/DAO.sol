@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./Content.sol";
+import "./CCP1.sol";
 import "./Token.sol";
-
+import "./Vault.sol";
 contract ContentDAO {
     CCP public ccpContract;
     Token public tokenContract;
+    Vault public vaultContract;
 
     mapping(address => uint256) public stakedTokens;
     mapping(address => bool) public members;
@@ -36,31 +37,33 @@ contract ContentDAO {
         _;
     }
 
-    constructor(address _ccpContract, address _tokenContract, uint256 _minimumStake) {
-        ccpContract = CCP(_ccpContract);
-        tokenContract = Token(_tokenContract);
-        minimumStake = _minimumStake;
-    }
+   constructor(address _ccpContract, address _tokenContract, uint256 _minimumStake, address _vaultAddress) {
+    ccpContract = CCP(_ccpContract);
+    tokenContract = Token(_tokenContract);
+    minimumStake = _minimumStake;
+    vaultContract = Vault(_vaultAddress);
+}
 
-    function joinDAO(uint256 stakeAmount) public {
-        require(!members[msg.sender], "Already a member");
-        require(stakeAmount >= minimumStake, "Stake amount too low");
-        require(tokenContract.transferFrom(msg.sender, address(this), stakeAmount), "Token transfer failed");
-        stakedTokens[msg.sender] = stakeAmount;
-        members[msg.sender] = true;
-        memberCount++;
-        emit MemberJoined(msg.sender, stakeAmount);
-    }
+function joinDAO(uint256 stakeAmount) public {
+    require(!members[msg.sender], "Already a member");
+    require(stakeAmount >= minimumStake, "Stake amount too low");
+    require(tokenContract.approve(address(vaultContract), stakeAmount), "Token approval failed");
+    vaultContract.stake(stakeAmount, msg.sender);
+    stakedTokens[msg.sender] = stakeAmount;
+    members[msg.sender] = true;
+    memberCount++;
+    emit MemberJoined(msg.sender, stakeAmount);
+}
 
-    function leaveDAO() public onlyMembers {
-        uint256 unstakeAmount = stakedTokens[msg.sender];
-        require(unstakeAmount > 0, "No staked tokens");
-        require(tokenContract.transfer(msg.sender, unstakeAmount), "Token transfer failed");
-        stakedTokens[msg.sender] = 0;
-        members[msg.sender] = false;
-        memberCount--;
-        emit MemberLeft(msg.sender, unstakeAmount);
-    }
+ function leaveDAO() public onlyMembers {
+    uint256 unstakeAmount = stakedTokens[msg.sender];
+    require(unstakeAmount > 0, "No staked tokens");
+    vaultContract.withdrawStake(unstakeAmount, msg.sender);
+    stakedTokens[msg.sender] = 0;
+    members[msg.sender] = false;
+    memberCount--;
+    emit MemberLeft(msg.sender, unstakeAmount);
+}
 
     function createProposal(string memory description) public onlyMembers returns (uint256) {
         Proposal storage newProposal = proposals[numProposals];

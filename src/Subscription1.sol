@@ -26,7 +26,7 @@ contract Subscription {
     mapping(address => bool) public isSubscribed;
     mapping(address => uint256) public subscriptionExpiry;
 
-    event Subscribed(address indexed creator, address indexed subscriber, uint256 expiry);
+    event Subscribed(address indexed creator, address indexed subscriber, uint256 indexed  timeSubscribed, uint256 expiry);
 
     uint256 subscriptionBaseFee = 1e2;
     uint256 discountRate = 25;
@@ -53,6 +53,10 @@ contract Subscription {
         return SubscribedTo[_subscriber];
     }
 
+    function getCreatorSubscriptionAmount(address _creator) public view returns(uint256){
+        return creatorSubscriptionAmount[_creator];
+    }
+
     // Subscribe to platform using tokens
     function subscribeToCreator(address _creator, uint256 _amount) public {
         require(!isSubscribedToCreator[_creator][msg.sender] && !(subscriptionToCreatorExpiry[_creator][msg.sender] >= block.timestamp), "User is already subscribed");
@@ -76,7 +80,7 @@ contract Subscription {
         creatorSubscribers[_creator].push(subscriberUser);
         SubscribedTo[msg.sender].push(creatorUser);
 
-        emit Subscribed(_creator, msg.sender, subscriptionToCreatorExpiry[_creator][msg.sender]);
+        emit Subscribed(_creator, msg.sender, block.timestamp, subscriptionToCreatorExpiry[_creator][msg.sender]);
     }
 
     // Check if user is subscribed to creator

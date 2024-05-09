@@ -73,4 +73,8 @@ contract Authorization {
         
         emit ProfileEdited(msg.sender, _newProfileImage);
     }
+
+    function checkRegisteredUsers(address _user) external view returns(bool){
+        return registeredUsers[_user];
+    }
 }

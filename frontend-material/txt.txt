@@ -14,15 +14,20 @@ Content Address: 0xf076FFa1dc4BEeB5a8069053150AF484246702bf
 
 
 Verified 2
-Analytics Address: 0xA06FB53feAF9183d8430Ce56C3bba059C1308c91
-Authorization Address: 0x35B6BB668fEF19f6e086BE5710EAcE8be6777961
-Token Address: 0xcC64667E7EC31637d72224a5Dd590FDe4bE734A5
-Vault Address: 0x29131baB9f7844A19F9c2f927d7D284753d2f40A
-Subscription Address: 0xC06F54a45238E492Df501876587efa3784f7248F
-Content Address: 0x19dF53F62dbB1586D85D0b1471357CCC1A774134
+Analytics Address: 0x8Ac8470Ba86dC32027050b159E050870Bc488811
+Authorization Address: 0xfb9516Ea76d38a5C28984F95b7f73D2E6361C2eB
+Token Address: 0x24809153438340Db7C0B1a94C6030Cc88AE7B1d7
+                    old
+Vault Address: 0x841bF83c2AFd28753B57f02fd3559415Dc562b12
+Subscription Address: 0xb4Ae389A2A1C29A9a302ec22C248cd9f570C2584
+Content Address: 0x2D64F7D92bf50Edb9efAc2aCAf7362e57444978E
+                    new
+Vault Address: 0xc39E726f8d3531AeFef1dc592a08edA0e9898c2D.                  
+Subscription Address: 0xdE01692C85E03d0ef9DF8d63CafCe00108A0894c
+Content Address: 0x2329106Ca1F7AC3b46373931698f27d4b3665635
 
-
-Queries (HTTP):     https://api.studio.thegraph.com/query/72160/cct/v1.0.0
+Content Query (HTTP):     https://api.studio.thegraph.com/query/72160/cct/v.0.0.2
+Subscription Query(HTTP):   https://api.studio.thegraph.com/query/72160/subscription/v0.0.1
 
 Verification Command
 forge create --rpc-url $RPC_URL --private-key $ETHERSCAN_KEY <contract-location> --constructor-args

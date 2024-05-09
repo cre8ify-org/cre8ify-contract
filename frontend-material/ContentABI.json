@@ -343,7 +343,7 @@
                 ]
             }
         ],
-        "stateMutability": "nonpayable"
+        "stateMutability": "view"
     },
     {
         "type": "function",
@@ -513,7 +513,7 @@
                 ]
             }
         ],
-        "stateMutability": "nonpayable"
+        "stateMutability": "view"
     },
     {
         "type": "function",

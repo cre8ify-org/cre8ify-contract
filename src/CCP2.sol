@@ -38,7 +38,6 @@ contract CCP {
         mapping(uint256 => mapping(address => bool)) freeContentDislikeTracker;
         mapping(uint256 => mapping(address => bool)) exclusiveContentDislikeTracker;
 
-        mapping(address => uint256) fetchFreeContentTimestamp;
         mapping(address => uint256) fetchExclusiveContentTimestamp;
 
         mapping(address => uint256) creatorRating;
@@ -217,8 +216,7 @@ contract CCP {
         emit ExclusiveContentDeleted(_id, msg.sender, content.creatorProfile, block.timestamp);
     }
 
-    function fetchFreeContent() public returns(ContentItem[] memory){
-        appVars.fetchFreeContentTimestamp[msg.sender] = block.timestamp;
+    function fetchFreeContent() public view returns(ContentItem[] memory){
         return appVars.freeContentsArray;
     }
 
@@ -228,8 +226,7 @@ contract CCP {
         return appVars.creatorExclusiveContents[_creator];
     }
 
-    function fetchMyFreeContent() public returns(ContentItem[] memory){
-        appVars.fetchFreeContentTimestamp[msg.sender] = block.timestamp;
+    function fetchMyFreeContent() public view returns(ContentItem[] memory){
         return appVars.creatorFreeContents[msg.sender];
     }
 

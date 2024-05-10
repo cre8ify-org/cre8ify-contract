@@ -1,11 +1,4 @@
-Token Address: 0x253698a610Ef999fAC8122ca547F30099412a688
-Authorization Address: 0x0Deb703179Fc41a61b993324c334187de7547e34
-Analytics Address: 0x01D3638fAebC02771EF4EF930Cb0E66971A062cC
-Content Address: 0xf394F79afa896fa17cc5F8369aB72F6126F55D9b
-Subscription Address: 0x26c2dF72eD83e461E1644AD686Cba59CA65ff66d
-DAO Address: 0x1ddBc0fe9AAAd5497c03212D088aFBe1F69DFe0c
-
-Verified 1
+Verified old
 Analytics Address: 0x3fC55568c3146c62930B4A8d74b9764A87a53412
 Authorization Address: 0xe45cEDc0022A206d201C6aD737985FF7305d3231
 Token Address: 0x2ACBdD67f4F4ABD211F0B30b0544B9efb17B658C
@@ -13,7 +6,7 @@ Subscription Address: 0x84cE0f74cF0e197F8CF7b4A59e5D8D2dBDAC387A
 Content Address: 0xf076FFa1dc4BEeB5a8069053150AF484246702bf
 
 
-Verified 2
+Verified new
 Analytics Address: 0x8Ac8470Ba86dC32027050b159E050870Bc488811
 Authorization Address: 0xfb9516Ea76d38a5C28984F95b7f73D2E6361C2eB
 Token Address: 0x24809153438340Db7C0B1a94C6030Cc88AE7B1d7
@@ -34,7 +27,7 @@ forge create --rpc-url $RPC_URL --private-key $ETHERSCAN_KEY <contract-location>
 forge verify-contract --chain-id $CHAIN_ID --watch --etherscan-api-key $ETHERSCAN_KEY <contract-address>
 
 Verify from script
-forge script script/CCP.s.sol:CCPScript --rpc-url $RPC_URL --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify -vvvv
+forge script script/CCP.s.sol:CCPScript --rpc-url $RPC_URL --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify -vvvv+
 
 
 

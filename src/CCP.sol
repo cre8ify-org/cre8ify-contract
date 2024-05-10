@@ -226,8 +226,8 @@ contract CCP {
         return appVars.creatorExclusiveContents[_creator];
     }
 
-    function fetchMyFreeContent() public view returns(ContentItem[] memory){
-        return appVars.creatorFreeContents[msg.sender];
+    function fetchMyFreeContent(address _creator) public view returns(ContentItem[] memory){
+        return appVars.creatorFreeContents[_creator];
     }
 
     function fetchMyExclusiveContent() public returns(ContentItem[] memory){

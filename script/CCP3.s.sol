@@ -10,9 +10,11 @@ import {CCP} from "../src/CCP.sol";
 import {Vault} from "../src/Vault.sol";
 
 contract CCPScript is Script {
-    Analytics public dAnalytics;
-    Authorization public dAuthorization;
-    Token public dToken;
+
+    address analytics = 0x8Ac8470Ba86dC32027050b159E050870Bc488811;
+    address authorization = 0xfb9516Ea76d38a5C28984F95b7f73D2E6361C2eB;
+    address token = 0x24809153438340Db7C0B1a94C6030Cc88AE7B1d7;
+
     Subscription public dSubscription;
     CCP public dCCP;
     Vault public dVault;
@@ -22,12 +24,10 @@ contract CCPScript is Script {
     function run() public {
         uint privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
-        dAnalytics = new Analytics();
-        dAuthorization = new Authorization();
-        dToken = new Token("ConntentCP", "CCP");
-        dVault = new Vault(address(dToken));
-        dSubscription = new Subscription(address(dToken), address(dVault), address(dAuthorization));    
-        dCCP = new CCP(address(dAuthorization), address(dAnalytics), address(dSubscription));
+
+        dVault = new Vault(token);
+        dSubscription = new Subscription(token, address(dVault), authorization);    
+        dCCP = new CCP(authorization, analytics, address(dSubscription));
         vm.stopBroadcast();
     }
 }

@@ -1,4 +1,3 @@
-
 Token Address: 0x253698a610Ef999fAC8122ca547F30099412a688
 Authorization Address: 0x0Deb703179Fc41a61b993324c334187de7547e34
 Analytics Address: 0x01D3638fAebC02771EF4EF930Cb0E66971A062cC
@@ -6,6 +5,36 @@ Content Address: 0xf394F79afa896fa17cc5F8369aB72F6126F55D9b
 Subscription Address: 0x26c2dF72eD83e461E1644AD686Cba59CA65ff66d
 DAO Address: 0x1ddBc0fe9AAAd5497c03212D088aFBe1F69DFe0c
 
+Verified 1
+Analytics Address: 0x3fC55568c3146c62930B4A8d74b9764A87a53412
+Authorization Address: 0xe45cEDc0022A206d201C6aD737985FF7305d3231
+Token Address: 0x2ACBdD67f4F4ABD211F0B30b0544B9efb17B658C
+Subscription Address: 0x84cE0f74cF0e197F8CF7b4A59e5D8D2dBDAC387A
+Content Address: 0xf076FFa1dc4BEeB5a8069053150AF484246702bf
 
 
-CONTRACT ADDRESSESS
+Verified 2
+Analytics Address: 0x8Ac8470Ba86dC32027050b159E050870Bc488811
+Authorization Address: 0xfb9516Ea76d38a5C28984F95b7f73D2E6361C2eB
+Token Address: 0x24809153438340Db7C0B1a94C6030Cc88AE7B1d7
+                    old
+Vault Address: 0x841bF83c2AFd28753B57f02fd3559415Dc562b12
+Subscription Address: 0xb4Ae389A2A1C29A9a302ec22C248cd9f570C2584
+Content Address: 0x2D64F7D92bf50Edb9efAc2aCAf7362e57444978E
+                    new
+Vault Address: 0xc39E726f8d3531AeFef1dc592a08edA0e9898c2D.                  
+Subscription Address: 0xdE01692C85E03d0ef9DF8d63CafCe00108A0894c
+Content Address: 0x2329106Ca1F7AC3b46373931698f27d4b3665635
+
+Content Query (HTTP):     https://api.studio.thegraph.com/query/72160/cct/v.0.0.2
+Subscription Query(HTTP):   https://api.studio.thegraph.com/query/72160/subscription/v0.0.1
+
+Verification Command
+forge create --rpc-url $RPC_URL --private-key $ETHERSCAN_KEY <contract-location> --constructor-args
+forge verify-contract --chain-id $CHAIN_ID --watch --etherscan-api-key $ETHERSCAN_KEY <contract-address>
+
+Verify from script
+forge script script/CCP.s.sol:CCPScript --rpc-url $RPC_URL --broadcast --etherscan-api-key $ETHERSCAN_KEY --verify -vvvv
+
+
+

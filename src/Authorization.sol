@@ -5,17 +5,19 @@ contract Authorization {
     struct User {
         string username;
         address walletAddress;
-        string profileImage; // IPFS hash or URL for profile image
+        string profileImage;
     }
 
+    uint256 userCount;
     mapping(address => User) public userDetails;
     mapping(address => bool) public registeredUsers;
     mapping(string => address) public usernameAddressTracker;
+    mapping(address => uint256) public userIndexTracker;
 
-    address[] public registeredUserAddresses; // Array to store registered user addresses
+    User[] public registeredUsersArray; 
 
     event UserRegistered(address indexed user, string username, string profileImage);
-    event ProfileEdited(address indexed user, string username, string profileImage);
+    event ProfileEdited(address indexed user, string profileImage);
 
     // Modifier to check if user is registered
     modifier onlyRegistered() {
@@ -36,10 +38,13 @@ contract Authorization {
 
         userDetails[msg.sender] = newUser;
         registeredUsers[msg.sender] = true;
-        registeredUserAddresses.push(msg.sender); // Add user address to the array
+        registeredUsersArray.push(newUser);
+        userIndexTracker[msg.sender] = userCount;
         usernameAddressTracker[_username] = msg.sender;
         
         emit UserRegistered(msg.sender, _username, _profileImage);
+
+        userCount++;
     }
 
     // Get user details
@@ -54,20 +59,22 @@ contract Authorization {
     }
 
     // Get all registered users
-    function getAllUsers() public view returns (address[] memory) {
-        return registeredUserAddresses;
+    function getAllUsers() public view returns (User[] memory) {
+        return registeredUsersArray;
     }
 
     // Edit creator profile
-    function editProfile(string memory _newUsername, string memory _newProfileImage) public onlyRegistered {
-        require(usernameAddressTracker[_newUsername] == address(0), "Username is already taken");
+    function editProfile(string memory _newProfileImage) public onlyRegistered {
         User storage user = userDetails[msg.sender];
-        usernameAddressTracker[user.username] = address(0);
-        usernameAddressTracker[_newUsername] = msg.sender;
 
-        user.username = _newUsername;
         user.profileImage = _newProfileImage;
         
-        emit ProfileEdited(msg.sender, _newUsername, _newProfileImage);
+        registeredUsersArray[userIndexTracker[msg.sender]].profileImage = _newProfileImage;
+        
+        emit ProfileEdited(msg.sender, _newProfileImage);
+    }
+
+    function checkRegisteredUsers(address _user) external view returns(bool){
+        return registeredUsers[_user];
     }
 }

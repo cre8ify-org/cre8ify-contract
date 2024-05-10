@@ -3,10 +3,10 @@ pragma solidity ^0.8.13;
 
 import "forge-std/Script.sol";
 import {Analytics} from "../src/Analytics.sol";
-import {Authorization} from "../src/Authorization1.sol";
+import {Authorization} from "../src/Authorization.sol";
 import {Token} from "../src/Token.sol";
-import {Subscription} from "../src/Subscription1.sol";
-import {CCP} from "../src/CCP2.sol";
+import {Subscription} from "../src/Subscription.sol";
+import {CCP} from "../src/CCP.sol";
 import {Vault} from "../src/Vault.sol";
 
 contract CCPScript is Script {

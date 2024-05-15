@@ -1,4 +1,4 @@
-# Cre8ify: The Future of Content Creation
+# Cre8ify
 
 Cre8ify is a decentralized content creation platform. Here, creators own their data and content, and control how they interact with fans and monetize their work. We achieve this through:
 

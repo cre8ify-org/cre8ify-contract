@@ -1,4 +1,4 @@
-# Cre8ify: A Decentralized Revolution for Content Creators
+# Cre8ify
 
 ## Executive Summary:
 

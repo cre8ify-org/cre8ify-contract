@@ -1,5 +1,7 @@
 # Cre8ify
 
+![Cre8ifyLogo](frontend-material/Cre8ifyLogo.png)
+
 Cre8ify is a decentralized content creation platform. Here, creators own their data and content, and control how they interact with fans and monetize their work. We achieve this through:
 
 - **Decentralized Storage:** Content is securely stored using blockchain, eliminating the risk of censorship or platform control.

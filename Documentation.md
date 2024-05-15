@@ -1,5 +1,7 @@
 # Cre8ify
 
+![Cre8ifyLogo](frontend-material/Cre8ifyLogo.png)
+
 ## Executive Summary:
 
 The content creation landscape is booming, but creators struggle with limited control, unfair compensation, and lack of transparency. Cre8ify addresses these issues by offering a **decentralized platform** built on blockchain technology. Here, creators own their content, manage interactions, and determine monetization strategies. Transparency, security, and fairness are fundamental for all users.

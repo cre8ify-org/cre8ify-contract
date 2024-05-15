@@ -1,5 +1,3 @@
-# Cre8ify
-
 ![Cre8ifyLogo](frontend-material/Cre8ifyLogo.png)
 
 ## Executive Summary:

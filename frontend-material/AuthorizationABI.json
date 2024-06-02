@@ -1,6 +1,25 @@
 [
 	{
 		"type": "function",
+		"name": "checkRegisteredUsers",
+		"inputs": [
+			{
+				"name": "_user",
+				"type": "address",
+				"internalType": "address"
+			}
+		],
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool",
+				"internalType": "bool"
+			}
+		],
+		"stateMutability": "view"
+	},
+	{
+		"type": "function",
 		"name": "editProfile",
 		"inputs": [
 			{

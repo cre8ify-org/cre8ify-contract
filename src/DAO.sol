@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./Content.sol";
+import "./CCP.sol";
 import "./Token.sol";
 import "./Vault.sol";
 import "./Authorization.sol";
-import "./Subcription.sol";
+import "./Subscription.sol";
 
 contract ContentDAO {
     CCP public ccpContract;

@@ -19,8 +19,22 @@ Vault Address: 0xc39E726f8d3531AeFef1dc592a08edA0e9898c2D.
 Subscription Address: 0xdE01692C85E03d0ef9DF8d63CafCe00108A0894c
 Content Address: 0x2329106Ca1F7AC3b46373931698f27d4b3665635
 
+Base
+Analytics Address: 0xd1DF10a1fc494E215A24268F74e8d9903602C104
+Authorization Address: 0x36Dd96cCf0f30F6dF266fC4738d3C21ad4ADE304
+Token Address: 0xfE2e009f99d8771F223BDCDcECDAcb9e955debaB
+Subscription Address: 0xC1e6F09D8bFF7D07Ceff84b36CA4EFd0620e349B
+Content Address: 0x54FfF2c7473C0185939D47bc25E81f9A4f6a132E
+Vault Address: 0xB0eD7cF2793D802A37E7b7d4b0e72c34962F4689
+
+
+Optimism
 Content Query (HTTP):     https://api.studio.thegraph.com/query/72160/cct/v.0.0.2
 Subscription Query(HTTP):   https://api.studio.thegraph.com/query/72160/subscription/v0.0.1
+
+Base
+Content Query (HTTP):     https://api.studio.thegraph.com/query/72160/ccp-base/0.0.1
+Subscription Query(HTTP):   https://api.studio.thegraph.com/query/72160/subscription-base/0.0.1
 
 Verification Command
 forge create --rpc-url $RPC_URL --private-key $ETHERSCAN_KEY <contract-location> --constructor-args

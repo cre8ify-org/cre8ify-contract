@@ -1,15 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
+
+import "../lib/AppLibrary.sol";
 
 interface IAuthorization {
-    struct User {
-        string username;
-        address walletAddress;
-        string profileImage;
-    }
 
     // Get user details
-    function getUserDetails(address _userAddress) external view returns (string memory, address, string memory);
+    function getUserDetails(address _userAddress) external view returns (AppLibrary.User memory);
 
     function checkRegisteredUsers(address _user) external view returns(bool);
 }

@@ -1,40 +1,10 @@
-Verified old
-Analytics Address: 0x3fC55568c3146c62930B4A8d74b9764A87a53412
-Authorization Address: 0xe45cEDc0022A206d201C6aD737985FF7305d3231
-Token Address: 0x2ACBdD67f4F4ABD211F0B30b0544B9efb17B658C
-Subscription Address: 0x84cE0f74cF0e197F8CF7b4A59e5D8D2dBDAC387A
-Content Address: 0xf076FFa1dc4BEeB5a8069053150AF484246702bf
-
-
-Verified new
-Analytics Address: 0x8Ac8470Ba86dC32027050b159E050870Bc488811
-Authorization Address: 0xfb9516Ea76d38a5C28984F95b7f73D2E6361C2eB
-Token Address: 0x24809153438340Db7C0B1a94C6030Cc88AE7B1d7
-                    old
-Vault Address: 0x841bF83c2AFd28753B57f02fd3559415Dc562b12
-Subscription Address: 0xb4Ae389A2A1C29A9a302ec22C248cd9f570C2584
-Content Address: 0x2D64F7D92bf50Edb9efAc2aCAf7362e57444978E
-                    new
-Vault Address: 0xc39E726f8d3531AeFef1dc592a08edA0e9898c2D.                  
-Subscription Address: 0xdE01692C85E03d0ef9DF8d63CafCe00108A0894c
-Content Address: 0x2329106Ca1F7AC3b46373931698f27d4b3665635
-
 Base
-Analytics Address: 0xd1DF10a1fc494E215A24268F74e8d9903602C104
-Authorization Address: 0x36Dd96cCf0f30F6dF266fC4738d3C21ad4ADE304
-Token Address: 0xfE2e009f99d8771F223BDCDcECDAcb9e955debaB
-Subscription Address: 0xC1e6F09D8bFF7D07Ceff84b36CA4EFd0620e349B
-Content Address: 0x54FfF2c7473C0185939D47bc25E81f9A4f6a132E
-Vault Address: 0xB0eD7cF2793D802A37E7b7d4b0e72c34962F4689
-
-
-Optimism
-Content Query (HTTP):     https://api.studio.thegraph.com/query/72160/cct/v.0.0.2
-Subscription Query(HTTP):   https://api.studio.thegraph.com/query/72160/subscription/v0.0.1
-
-Base
-Content Query (HTTP):     https://api.studio.thegraph.com/query/72160/ccp-base/0.0.1
-Subscription Query(HTTP):   https://api.studio.thegraph.com/query/72160/subscription-base/0.0.1
+Analytics Address: 0x4ceedF5Cc3192d4f2c96Ce5d77c3f15CB092D3f3
+Authorization Address: 0x3de6d6284C9bc56948d5839D2d15D4345EA1A6ca
+Token Address: 0xa8A8FFD980b6ad7eAB76970482152962ed19223C
+Subscription Address: 0x5f221318bd0F0E0e8C4d1A30a2FEB81634eF50B2
+Content Address: 0x46d6e33eBADC2E41886F96831178b8C8428fA42f
+Vault Address: 0x018ffEcC194365c8CD9593573E2D37215DC9C5c6
 
 Verification Command
 forge create --rpc-url $RPC_URL --private-key $ETHERSCAN_KEY <contract-location> --constructor-args

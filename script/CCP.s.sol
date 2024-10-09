@@ -22,12 +22,13 @@ contract CCPScript is Script {
     function run() public {
         uint privateKey = vm.envUint("PRIVATE_KEY");
         vm.startBroadcast(privateKey);
-        dAnalytics = new Analytics();
+        dAnalytics = new Analytics(address(0));
         dAuthorization = new Authorization();
         dToken = new Token("ConntentCP", "CCP");
         dVault = new Vault(address(dToken));
         dSubscription = new Subscription(address(dToken), address(dVault), address(dAuthorization));    
         dCCP = new CCP(address(dAuthorization), address(dAnalytics), address(dSubscription));
+        dAnalytics.changeCCPContract(address(dCCP));
         vm.stopBroadcast();
     }
 }

@@ -6,10 +6,10 @@ import "./LayoutLibrary.sol";
 
 library ContentLibrary{
     event FreeContentCreated(uint256 indexed id, address indexed creator, string creatorUsername, uint256  indexed timestamp);
-    event ExclusiveContentCreated(uint256 indexed id, address indexed creator, string creatorUsername, uint256  indexed timestamp);
+    // event ExclusiveContentCreated(uint256 indexed id, address indexed creator, string creatorUsername, uint256  indexed timestamp);
 
     event FreeContentDeleted(uint256 indexed freeContentID, address indexed creator, string creatorUsername, uint256  indexed timestamp);
-    event ExclusiveContentDeleted(uint256 indexed exclusiveContentID, address indexed creator, string creatorUsername, uint256  indexed timestamp);
+    // event ExclusiveContentDeleted(uint256 indexed exclusiveContentID, address indexed creator, string creatorUsername, uint256  indexed timestamp);
 
     function createFreeContent(
         string memory _title,
@@ -50,39 +50,39 @@ library ContentLibrary{
         appVars.creatorFreeContentCount[msg.sender]++;
     }
 
-    function createExclusiveContent(
-        string memory _title,
-        string memory _ipfsHash,
-        string memory _contentType,
-        string memory username,
-        string memory _creatorImage,
-        LayoutLibrary.CCPLayout storage appVars
-    ) external {
-        AppLibrary.ContentItem memory newContent = AppLibrary.ContentItem({
-            title: _title,
-            id: appVars.creatorExclusiveContentCount[msg.sender],
-            contentId: appVars.creatorExclusiveContentCount[msg.sender],
-            dateCreated: block.timestamp,
-            creator: msg.sender,
-            creatorProfile: username, 
-            ipfsHash: _ipfsHash,
-            views: 0,
-            likes: 0,
-            dislikes: 0,
-            shares: 0,
-            rating: 0,
-            contentType: _contentType,
-            creatorImage: _creatorImage 
-        });
+    // function createExclusiveContent(
+    //     string memory _title,
+    //     string memory _ipfsHash,
+    //     string memory _contentType,
+    //     string memory username,
+    //     string memory _creatorImage,
+    //     LayoutLibrary.CCPLayout storage appVars
+    // ) external {
+    //     AppLibrary.ContentItem memory newContent = AppLibrary.ContentItem({
+    //         title: _title,
+    //         id: appVars.creatorExclusiveContentCount[msg.sender],
+    //         contentId: appVars.creatorExclusiveContentCount[msg.sender],
+    //         dateCreated: block.timestamp,
+    //         creator: msg.sender,
+    //         creatorProfile: username, 
+    //         ipfsHash: _ipfsHash,
+    //         views: 0,
+    //         likes: 0,
+    //         dislikes: 0,
+    //         shares: 0,
+    //         rating: 0,
+    //         contentType: _contentType,
+    //         creatorImage: _creatorImage 
+    //     });
 
-        appVars.exclusiveContents[msg.sender][appVars.creatorExclusiveContentCount[msg.sender]] = newContent;
+    //     appVars.exclusiveContents[msg.sender][appVars.creatorExclusiveContentCount[msg.sender]] = newContent;
 
-        appVars.creatorExclusiveContents[msg.sender].push(newContent);
+    //     appVars.creatorExclusiveContents[msg.sender].push(newContent);
 
-        emit ExclusiveContentCreated(appVars.creatorExclusiveContentCount[msg.sender], msg.sender, username, block.timestamp);
+    //     emit ExclusiveContentCreated(appVars.creatorExclusiveContentCount[msg.sender], msg.sender, username, block.timestamp);
 
-        appVars.creatorExclusiveContentCount[msg.sender]++;
-    }
+    //     appVars.creatorExclusiveContentCount[msg.sender]++;
+    // }
 
 
     function deleteFreeContent(uint256 _id, LayoutLibrary.CCPLayout storage appVars) external  {
@@ -120,32 +120,32 @@ library ContentLibrary{
         emit FreeContentDeleted(_id, msg.sender, content.creatorProfile, block.timestamp);
     }
 
-    function deleteExclusiveContent(uint256 _id, LayoutLibrary.CCPLayout storage appVars) external {
+    // function deleteExclusiveContent(uint256 _id, LayoutLibrary.CCPLayout storage appVars) external {
         
-        AppLibrary.ContentItem storage content = appVars.exclusiveContents[msg.sender][_id];
+    //     AppLibrary.ContentItem storage content = appVars.exclusiveContents[msg.sender][_id];
 
-        require(
-            content.creator == msg.sender,
-            "You are not the creator"
-        );
+    //     require(
+    //         content.creator == msg.sender,
+    //         "You are not the creator"
+    //     );
 
-        if (_id < appVars.creatorExclusiveContents[msg.sender].length) {
+    //     if (_id < appVars.creatorExclusiveContents[msg.sender].length) {
 
-            appVars.creatorExclusiveContents[msg.sender][_id] = appVars.creatorExclusiveContents[msg.sender][appVars.creatorExclusiveContents[msg.sender].length - 1];
+    //         appVars.creatorExclusiveContents[msg.sender][_id] = appVars.creatorExclusiveContents[msg.sender][appVars.creatorExclusiveContents[msg.sender].length - 1];
             
-            appVars.creatorExclusiveContents[msg.sender][_id].id = content.id;
+    //         appVars.creatorExclusiveContents[msg.sender][_id].id = content.id;
             
-            appVars.creatorExclusiveContents[msg.sender][_id].contentId = content.contentId;
+    //         appVars.creatorExclusiveContents[msg.sender][_id].contentId = content.contentId;
 
-            appVars.exclusiveContents[msg.sender][_id] = appVars.creatorExclusiveContents[msg.sender][_id];
+    //         appVars.exclusiveContents[msg.sender][_id] = appVars.creatorExclusiveContents[msg.sender][_id];
             
-            appVars.creatorExclusiveContents[msg.sender].pop();
+    //         appVars.creatorExclusiveContents[msg.sender].pop();
 
-            appVars.creatorExclusiveContentCount[msg.sender]--;
-        }
+    //         appVars.creatorExclusiveContentCount[msg.sender]--;
+    //     }
 
-        emit ExclusiveContentDeleted(_id, msg.sender, content.creatorProfile, block.timestamp);
-    }
+    //     emit ExclusiveContentDeleted(_id, msg.sender, content.creatorProfile, block.timestamp);
+    // }
 
     function fetchFreeContent(LayoutLibrary.CCPLayout storage appVars) external view returns(AppLibrary.ContentItem[] memory){
         
@@ -153,14 +153,14 @@ library ContentLibrary{
 
     }
 
-    function fetchExclusiveContent(address _creator, LayoutLibrary.CCPLayout storage appVars) external returns(AppLibrary.ContentItem[] memory){
+    // function fetchExclusiveContent(address _creator, LayoutLibrary.CCPLayout storage appVars) external returns(AppLibrary.ContentItem[] memory){
         
-        require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
+    //     require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
 
-        appVars.fetchExclusiveContentTimestamp[msg.sender] = block.timestamp;
+    //     appVars.fetchExclusiveContentTimestamp[msg.sender] = block.timestamp;
 
-        return appVars.creatorExclusiveContents[_creator];
-    }
+    //     return appVars.creatorExclusiveContents[_creator];
+    // }
 
     function fetchMyFreeContent(address _creator, LayoutLibrary.CCPLayout storage appVars) external view returns(AppLibrary.ContentItem[] memory){
         
@@ -168,13 +168,13 @@ library ContentLibrary{
 
     }
 
-    function fetchMyExclusiveContent(LayoutLibrary.CCPLayout storage appVars) external returns(AppLibrary.ContentItem[] memory){
+    // function fetchMyExclusiveContent(LayoutLibrary.CCPLayout storage appVars) external returns(AppLibrary.ContentItem[] memory){
         
-        appVars.fetchExclusiveContentTimestamp[msg.sender] = block.timestamp;
+    //     appVars.fetchExclusiveContentTimestamp[msg.sender] = block.timestamp;
 
-        return appVars.creatorExclusiveContents[msg.sender];
+    //     return appVars.creatorExclusiveContents[msg.sender];
 
-    }
+    // }
 
     function fetchFreeContentAnalytics(uint256 _id, LayoutLibrary.CCPLayout storage appVars) external view returns(AppLibrary.ContentAnalytics memory){
 
@@ -182,11 +182,11 @@ library ContentLibrary{
 
     }
 
-    function fetchExclusiveContentAnalytics(uint256 _id, LayoutLibrary.CCPLayout storage appVars) external view  returns(AppLibrary.ContentAnalytics memory){
+    // function fetchExclusiveContentAnalytics(uint256 _id, LayoutLibrary.CCPLayout storage appVars) external view  returns(AppLibrary.ContentAnalytics memory){
         
-        return appVars.analyticsContract.getExclusiveContentAnalytics(_id);
+    //     return appVars.analyticsContract.getExclusiveContentAnalytics(_id);
 
-    }
+    // }
 
     function fetchCreatorAnalytics(address _creator, LayoutLibrary.CCPLayout storage appVars) external view returns(AppLibrary.CreatorAnalytics memory){
         

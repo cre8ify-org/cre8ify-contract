@@ -13,15 +13,6 @@ interface IAnalytics {
     // Track Free content ratings
     function trackFreeRating(uint256 _id, uint256 _rating) external;
 
-    // Track Exclusive content likes
-    function trackExclusiveLike(uint256 _id) external;
-
-    // Track Exclusive content dislikes
-    function trackExclusiveDislike(uint256 _id) external;
-
-    // Track Exclusive content ratings
-    function trackExclusiveRating(uint256 _id, uint256 _rating) external;
-
     // Track Creator rating
     function trackCreatorRating(address _creator, uint256 _rating) external;
 
@@ -31,10 +22,6 @@ interface IAnalytics {
     // Get Free content analytics
     function getFreeContentAnalytics(uint256 _id) external view returns(AppLibrary.ContentAnalytics memory);
 
-    // Get exclusive content analytics
-    function getExclusiveContentAnalytics(uint256 _id) external view returns(AppLibrary.ContentAnalytics memory);
-
     // Get creator content analytics
     function getCreatorAnalytics(address _creator) external view returns(AppLibrary.CreatorAnalytics memory);
-
 }

@@ -8,16 +8,16 @@ import "./LayoutLibrary.sol";
 library AnalyticsLibrary {
 
     event FreeContentLiked(uint256 indexed freeContentID, address indexed creator,  uint256 indexed timestamp);
-    event ExclusiveContentLiked(uint256 indexed exclusiveContentID, address indexed creator, uint256 indexed timestamp);
+    // event ExclusiveContentLiked(uint256 indexed exclusiveContentID, address indexed creator, uint256 indexed timestamp);
 
     event FreeContentDisliked(uint256 indexed freeContentID, address indexed creator, uint256  indexed timestamp);
-    event ExclusiveContentDisliked(uint256 indexed exclusiveContentID, address indexed creator, uint256 indexed timestamp);
+    // event ExclusiveContentDisliked(uint256 indexed exclusiveContentID, address indexed creator, uint256 indexed timestamp);
 
     event FreeContentViewed(uint256 indexed id, address indexed creator, uint256 indexed timestamp);
-    event ExclusiveContentViewed(uint256 indexed id, address indexed creator, uint256 indexed timestamp);
+    // event ExclusiveContentViewed(uint256 indexed id, address indexed creator, uint256 indexed timestamp);
 
     event FreeContentRated(uint256 indexed id, address indexed creator, uint256 indexed timestamp, uint256 rating);
-    event ExclusiveContentRated(uint256 indexed id, address indexed creator, uint256 indexed timestamp, uint256 rating);
+    // event ExclusiveContentRated(uint256 indexed id, address indexed creator, uint256 indexed timestamp, uint256 rating);
 
     event CreatorRated(address indexed creator, uint256 indexed timestamp, uint256 rating);
 
@@ -127,61 +127,61 @@ library AnalyticsLibrary {
         }
     }
 
-    function likeExclusiveContent(uint256 _id, address _creator, LayoutLibrary.CCPLayout storage appVars) public  {
-        require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
+    // function likeExclusiveContent(uint256 _id, address _creator, LayoutLibrary.CCPLayout storage appVars) public  {
+    //     require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
         
-        AppLibrary.ContentItem memory content = appVars.exclusiveContents[_creator][_id];
+    //     AppLibrary.ContentItem memory content = appVars.exclusiveContents[_creator][_id];
 
-        if (appVars.exclusiveContentDislikeTracker[_id][msg.sender]){
+    //     if (appVars.exclusiveContentDislikeTracker[_id][msg.sender]){
             
-            appVars.creatorExclusiveContents[_creator][_id].dislikes--;
+    //         appVars.creatorExclusiveContents[_creator][_id].dislikes--;
             
-            appVars.exclusiveContents[_creator][_id].dislikes--;
+    //         appVars.exclusiveContents[_creator][_id].dislikes--;
 
-            appVars.exclusiveContentDislikeTracker[_id][msg.sender] = false;
-        }
+    //         appVars.exclusiveContentDislikeTracker[_id][msg.sender] = false;
+    //     }
 
-        if(!appVars.exclusiveContentLikeTracker[_id][msg.sender]){
+    //     if(!appVars.exclusiveContentLikeTracker[_id][msg.sender]){
             
-            appVars.exclusiveContentLikeTracker[_id][msg.sender] = true;
+    //         appVars.exclusiveContentLikeTracker[_id][msg.sender] = true;
 
-            appVars.creatorExclusiveContents[_creator][_id].likes++;
+    //         appVars.creatorExclusiveContents[_creator][_id].likes++;
             
-            appVars.exclusiveContents[_creator][_id].likes++;
+    //         appVars.exclusiveContents[_creator][_id].likes++;
 
-            emit ExclusiveContentLiked(_id, content.creator, block.timestamp);
+    //         emit ExclusiveContentLiked(_id, content.creator, block.timestamp);
             
-            appVars.analyticsContract.trackExclusiveLike(_id);
-        }
-    }
+    //         appVars.analyticsContract.trackExclusiveLike(_id);
+    //     }
+    // }
 
-    function dislikeExclusiveContent(uint256 _id, address _creator, LayoutLibrary.CCPLayout storage appVars) public  {
-        require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
+    // function dislikeExclusiveContent(uint256 _id, address _creator, LayoutLibrary.CCPLayout storage appVars) public  {
+    //     require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
         
-        AppLibrary.ContentItem memory content = appVars.exclusiveContents[_creator][_id];
+    //     AppLibrary.ContentItem memory content = appVars.exclusiveContents[_creator][_id];
 
-        if (appVars.exclusiveContentLikeTracker[_id][msg.sender]){
+    //     if (appVars.exclusiveContentLikeTracker[_id][msg.sender]){
             
-            appVars.creatorExclusiveContents[_creator][_id].likes--;
+    //         appVars.creatorExclusiveContents[_creator][_id].likes--;
             
-            appVars.exclusiveContents[_creator][_id].likes--;
+    //         appVars.exclusiveContents[_creator][_id].likes--;
 
-            appVars.exclusiveContentLikeTracker[_id][msg.sender] = false;
-        }
+    //         appVars.exclusiveContentLikeTracker[_id][msg.sender] = false;
+    //     }
 
-        if(!appVars.exclusiveContentDislikeTracker[_id][msg.sender]){
+    //     if(!appVars.exclusiveContentDislikeTracker[_id][msg.sender]){
             
-            appVars.exclusiveContentDislikeTracker[_id][msg.sender] = true;
+    //         appVars.exclusiveContentDislikeTracker[_id][msg.sender] = true;
 
-            appVars.creatorExclusiveContents[_creator][_id].dislikes++;
+    //         appVars.creatorExclusiveContents[_creator][_id].dislikes++;
             
-            appVars.exclusiveContents[_creator][_id].dislikes++;
+    //         appVars.exclusiveContents[_creator][_id].dislikes++;
 
-            emit ExclusiveContentDisliked(_id, content.creator, block.timestamp);
+    //         emit ExclusiveContentDisliked(_id, content.creator, block.timestamp);
             
-            appVars.analyticsContract.trackExclusiveDislike(_id);
-        }
-    }
+    //         appVars.analyticsContract.trackExclusiveDislike(_id);
+    //     }
+    // }
 
 
     function rateFreeContent(uint256 _id, uint _rating, LayoutLibrary.CCPLayout storage appVars) public  {
@@ -217,39 +217,39 @@ library AnalyticsLibrary {
         appVars.analyticsContract.trackFreeRating(_id, averageRating);
     }
 
-    function rateExclusiveContent(uint256 _id, address _creator, uint256 _rating, LayoutLibrary.CCPLayout storage appVars) public  {
+    // function rateExclusiveContent(uint256 _id, address _creator, uint256 _rating, LayoutLibrary.CCPLayout storage appVars) public  {
         
-        require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
+    //     require(appVars.subscriptionContract.checkSubscribtionToCreatorStatus(_creator, msg.sender), "You are not subscribed");
         
-        require(_rating >= 1 && _rating <= 5, "Invalid rating");
+    //     require(_rating >= 1 && _rating <= 5, "Invalid rating");
         
-        uint256 previousRating = appVars.userExclusiveContentRatingTracker[_id][msg.sender];
+    //     uint256 previousRating = appVars.userExclusiveContentRatingTracker[_id][msg.sender];
 
-        if (!(previousRating < 1)) {
+    //     if (!(previousRating < 1)) {
             
-            appVars.exclusiveContentRatingSum[_creator][_id] -= previousRating;
+    //         appVars.exclusiveContentRatingSum[_creator][_id] -= previousRating;
             
-            appVars.exclusiveContentRatingCount[_creator][_id] -= 1; 
-        }
+    //         appVars.exclusiveContentRatingCount[_creator][_id] -= 1; 
+    //     }
 
-        appVars.exclusiveContentRatingSum[_creator][_id] += _rating;
+    //     appVars.exclusiveContentRatingSum[_creator][_id] += _rating;
         
-        appVars.exclusiveContentRatingCount[_creator][_id] += 1;
+    //     appVars.exclusiveContentRatingCount[_creator][_id] += 1;
 
-        uint256 averageRating = (appVars.exclusiveContentRatingSum[_creator][_id] / appVars.exclusiveContentRatingCount[_creator][_id]) * 1 ether;
+    //     uint256 averageRating = (appVars.exclusiveContentRatingSum[_creator][_id] / appVars.exclusiveContentRatingCount[_creator][_id]) * 1 ether;
 
-        AppLibrary.ContentItem memory content = appVars.freeContents[_id];
+    //     AppLibrary.ContentItem memory content = appVars.freeContents[_id];
 
-        appVars.creatorExclusiveContents[_creator][_id].rating = averageRating;
+    //     appVars.creatorExclusiveContents[_creator][_id].rating = averageRating;
         
-        appVars.exclusiveContents[_creator][_id].rating = averageRating;
+    //     appVars.exclusiveContents[_creator][_id].rating = averageRating;
 
-        appVars.userExclusiveContentRatingTracker[_id][msg.sender] = _rating;
+    //     appVars.userExclusiveContentRatingTracker[_id][msg.sender] = _rating;
 
-        emit FreeContentRated(_id, content.creator, block.timestamp, _rating);
+    //     emit FreeContentRated(_id, content.creator, block.timestamp, _rating);
         
-        appVars.analyticsContract.trackExclusiveRating(_id, averageRating);
-    }
+    //     appVars.analyticsContract.trackExclusiveRating(_id, averageRating);
+    // }
 
     function rateCreator(address creator, uint _rating, LayoutLibrary.CCPLayout storage appVars) public  {
         require(_rating >= 1 && _rating <= 5, "Invalid rating");
@@ -286,13 +286,13 @@ library AnalyticsLibrary {
 
     }
 
-    function getExclusiveContentAnalytics(uint256 _id, LayoutLibrary.AnalyticsLayout storage analyticsVars) public view returns(AppLibrary.ContentAnalytics memory){
+    // function getExclusiveContentAnalytics(uint256 _id, LayoutLibrary.AnalyticsLayout storage analyticsVars) public view returns(AppLibrary.ContentAnalytics memory){
         
-        AppLibrary.ContentAnalytics memory contentAnalytics = AppLibrary.ContentAnalytics(analyticsVars.exclusiveLikes[_id], analyticsVars.exclusiveDislikes[_id], analyticsVars.exclusiveRatings[_id]);
+    //     AppLibrary.ContentAnalytics memory contentAnalytics = AppLibrary.ContentAnalytics(analyticsVars.exclusiveLikes[_id], analyticsVars.exclusiveDislikes[_id], analyticsVars.exclusiveRatings[_id]);
 
-        return contentAnalytics;
+    //     return contentAnalytics;
 
-    }
+    // }
 
     function getCreatorAnalytics(address _creator, LayoutLibrary.AnalyticsLayout storage analyticsVars) public view returns(AppLibrary.CreatorAnalytics memory){
         
@@ -326,23 +326,23 @@ library AnalyticsLibrary {
 
     }
 
-    function trackExclusiveLike(uint256 _id, LayoutLibrary.AnalyticsLayout storage analyticsVars) external {
+    // function trackExclusiveLike(uint256 _id, LayoutLibrary.AnalyticsLayout storage analyticsVars) external {
         
-        analyticsVars.exclusiveLikes[_id]++;
+    //     analyticsVars.exclusiveLikes[_id]++;
 
-    }
+    // }
 
-    function trackExclusiveDislike(uint256 _id, LayoutLibrary.AnalyticsLayout storage analyticsVars) external {
+    // function trackExclusiveDislike(uint256 _id, LayoutLibrary.AnalyticsLayout storage analyticsVars) external {
         
-        analyticsVars.exclusiveDislikes[_id]++;
+    //     analyticsVars.exclusiveDislikes[_id]++;
 
-    }
+    // }
 
-    function trackExclusiveRating(uint256 _id, uint256 _rating, LayoutLibrary.AnalyticsLayout storage analyticsVars) external {
+    // function trackExclusiveRating(uint256 _id, uint256 _rating, LayoutLibrary.AnalyticsLayout storage analyticsVars) external {
         
-        analyticsVars.exclusiveRatings[_id] = _rating;
+    //     analyticsVars.exclusiveRatings[_id] = _rating;
 
-    }
+    // }
 
     function trackCreatorRating(address _creator, uint256 _rating, LayoutLibrary.AnalyticsLayout storage analyticsVars) external {
         

@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "../interface/IAuthorization.sol";
-import "../interface/IAnalytics.sol";
-import "../interface/ISubscription.sol";
+import "./interface/IAuthorization.sol";
+import "./interface/IAnalytics.sol";
+import "./interface/ISubscription.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "../interface/IVault.sol";
+import "./interface/IVault.sol";
 import "./AppLibrary.sol";
 
 library LayoutLibrary {

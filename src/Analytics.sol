@@ -48,25 +48,25 @@ contract Analytics {
     }
 
     // Track  exclusive content likes
-    function trackExclusiveLike(uint256 _id) external onlyCCPContract {
+    // function trackExclusiveLike(uint256 _id) external onlyCCPContract {
 
-        AnalyticsLibrary.trackExclusiveLike(_id, analyticsVars);
+    //     AnalyticsLibrary.trackExclusiveLike(_id, analyticsVars);
 
-    }
+    // }
 
     // Track exclusive content dislikes
-    function trackExclusiveDislike(uint256 _id) external onlyCCPContract {
+    // function trackExclusiveDislike(uint256 _id) external onlyCCPContract {
 
-        AnalyticsLibrary.trackExclusiveDislike(_id, analyticsVars);
+    //     AnalyticsLibrary.trackExclusiveDislike(_id, analyticsVars);
 
-    }
+    // }
 
-    // Track exclusive content ratings
-    function trackExclusiveRating(uint256 _id, uint256 _rating) external onlyCCPContract {
+    // // Track exclusive content ratings
+    // function trackExclusiveRating(uint256 _id, uint256 _rating) external onlyCCPContract {
 
-        AnalyticsLibrary.trackExclusiveRating(_id, _rating, analyticsVars);
+    //     AnalyticsLibrary.trackExclusiveRating(_id, _rating, analyticsVars);
 
-    }
+    // }
 
     // Track creator followers
     function trackFollower(address _creator, bool _inc) external onlyCCPContract {
@@ -90,11 +90,11 @@ contract Analytics {
     }
 
     // Get exclusive content analytics
-    function getExclusiveContentAnalytics(uint256 _id) external view onlyCCPContract returns(AppLibrary.ContentAnalytics memory){
+    // function getExclusiveContentAnalytics(uint256 _id) external view onlyCCPContract returns(AppLibrary.ContentAnalytics memory){
         
-        return AnalyticsLibrary.getExclusiveContentAnalytics(_id, analyticsVars);
+    //     return AnalyticsLibrary.getExclusiveContentAnalytics(_id, analyticsVars);
 
-    }
+    // }
 
     // Get creator analytics
     function getCreatorAnalytics(address _creator) public view onlyCCPContract returns(AppLibrary.CreatorAnalytics memory){

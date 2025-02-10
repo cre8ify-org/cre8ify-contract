@@ -4,7 +4,11 @@ pragma solidity ^0.8.20;
 import "./LayoutLibrary.sol";
 
 library VaultLibrary {
-    event Tipped(address indexed creator, address indexed tipper, uint256 amount);
+    event Tipped(
+        address indexed creator,
+        address indexed tipper,
+        uint256 amount
+    );
     event WithdrawnAccrued(address indexed creator, uint256 amount);
 
     /**
@@ -20,11 +24,17 @@ library VaultLibrary {
         address creator,
         LayoutLibrary.VaultLayout storage vaultVars
     ) external {
-        require(vaultVars.token.balanceOf(tipper) >= amount, "Insufficient balance");
+        require(
+            vaultVars.token.balanceOf(tipper) >= amount,
+            "Insufficient balance"
+        );
         require(amount > 0, "Tip amount must be greater than zero");
 
         // Transfer tokens from tipper to the contract
-        require(vaultVars.token.transferFrom(tipper, address(this), amount), "Token transfer failed");
+        require(
+            vaultVars.token.transferFrom(tipper, address(this), amount),
+            "Token transfer failed"
+        );
 
         // Update the creator's accrued amount and overall tipping balance
         vaultVars.creatorAccrued[creator] += amount;
@@ -44,7 +54,10 @@ library VaultLibrary {
         address creator,
         LayoutLibrary.VaultLayout storage vaultVars
     ) external {
-        require(vaultVars.creatorAccrued[creator] >= amount, "Insufficient funds");
+        require(
+            vaultVars.creatorAccrued[creator] >= amount,
+            "Insufficient funds"
+        );
         require(amount > 0, "Payout amount must be greater than zero");
 
         // Update balances

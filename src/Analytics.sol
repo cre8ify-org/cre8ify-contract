@@ -54,6 +54,7 @@ contract Analytics {
     }
 
     // Track  exclusive content likes
+
     function trackExclusiveLike(uint256 _id) external onlyCCPContract {
         AnalyticsLibrary.trackExclusiveLike(_id, analyticsVars);
     }
@@ -70,6 +71,7 @@ contract Analytics {
     ) external onlyCCPContract {
         AnalyticsLibrary.trackExclusiveRating(_id, _rating, analyticsVars);
     }
+
 
     // Track creator followers
     function trackFollower(

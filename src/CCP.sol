@@ -33,17 +33,17 @@ contract CCP {
 
     }
 
-    function createExclusiveContent(
-        string memory _title,
-        string memory _ipfsHash,
-        string memory _contentType,
-        string memory username,
-        string memory _creatorImage
-    ) public onlyRegistered {
+    // function createExclusiveContent(
+    //     string memory _title,
+    //     string memory _ipfsHash,
+    //     string memory _contentType,
+    //     string memory username,
+    //     string memory _creatorImage
+    // ) public onlyRegistered {
         
-        ContentLibrary.createExclusiveContent(_title, _ipfsHash, _contentType, username, _creatorImage, appVars);
+    //     ContentLibrary.createExclusiveContent(_title, _ipfsHash, _contentType, username, _creatorImage, appVars);
 
-    }
+    // }
 
 
     function deleteFreeContent(uint256 _id) public onlyRegistered {
@@ -52,11 +52,11 @@ contract CCP {
 
     }
 
-    function deleteExclusiveContent(uint256 _id) public onlyRegistered {
+    // function deleteExclusiveContent(uint256 _id) public onlyRegistered {
         
-        ContentLibrary.deleteExclusiveContent(_id, appVars);
+    //     ContentLibrary.deleteExclusiveContent(_id, appVars);
 
-    }
+    // }
 
     function fetchFreeContent() public view returns(AppLibrary.ContentItem[] memory){
 
@@ -64,11 +64,11 @@ contract CCP {
 
     }
 
-    function fetchExclusiveContent(address _creator) public returns(AppLibrary.ContentItem[] memory){
+    // function fetchExclusiveContent(address _creator) public returns(AppLibrary.ContentItem[] memory){
 
-        return ContentLibrary.fetchExclusiveContent(_creator, appVars);
+    //     return ContentLibrary.fetchExclusiveContent(_creator, appVars);
 
-    }
+    // }
 
     function fetchMyFreeContent(address _creator) public view returns(AppLibrary.ContentItem[] memory){
 
@@ -76,11 +76,11 @@ contract CCP {
 
     }
 
-    function fetchMyExclusiveContent() public returns(AppLibrary.ContentItem[] memory){
+    // function fetchMyExclusiveContent() public returns(AppLibrary.ContentItem[] memory){
         
-        return ContentLibrary.fetchMyExclusiveContent(appVars);
+    //     return ContentLibrary.fetchMyExclusiveContent(appVars);
 
-    }
+    // }
 
     function fetchFollowers(address _creator) public view onlyRegistered returns(AppLibrary.User[] memory){
 
@@ -94,11 +94,11 @@ contract CCP {
 
     }
 
-    function fetchExclusiveContentAnalytics(uint256 _id) public view onlyRegistered returns(AppLibrary.ContentAnalytics memory){
+    // function fetchExclusiveContentAnalytics(uint256 _id) public view onlyRegistered returns(AppLibrary.ContentAnalytics memory){
         
-        return ContentLibrary.fetchExclusiveContentAnalytics(_id, appVars);
+    //     return ContentLibrary.fetchExclusiveContentAnalytics(_id, appVars);
 
-    }
+    // }
 
     function fetchCreatorAnalytics(address _creator) public view onlyRegistered returns(AppLibrary.CreatorAnalytics memory){
         
@@ -132,17 +132,17 @@ contract CCP {
 
     }
 
-    function likeExclusiveContent(uint256 _id, address _creator) public onlyRegistered {
+    // function likeExclusiveContent(uint256 _id, address _creator) public onlyRegistered {
         
-        AnalyticsLibrary.likeExclusiveContent(_id, _creator, appVars);
+    //     AnalyticsLibrary.likeExclusiveContent(_id, _creator, appVars);
 
-    }
+    // }
 
-    function dislikeExclusiveContent(uint256 _id, address _creator) public onlyRegistered {
+    // function dislikeExclusiveContent(uint256 _id, address _creator) public onlyRegistered {
 
-        AnalyticsLibrary.dislikeExclusiveContent(_id, _creator, appVars);
+    //     AnalyticsLibrary.dislikeExclusiveContent(_id, _creator, appVars);
 
-    }
+    // }
 
 
     function rateFreeContent(uint256 _id, uint _rating) public onlyRegistered {
@@ -151,11 +151,11 @@ contract CCP {
 
     }
 
-    function rateExclusiveContent(uint256 _id, address _creator, uint256 _rating) public onlyRegistered {
+    // function rateExclusiveContent(uint256 _id, address _creator, uint256 _rating) public onlyRegistered {
         
-        AnalyticsLibrary.rateExclusiveContent(_id, _creator, _rating, appVars);
+    //     AnalyticsLibrary.rateExclusiveContent(_id, _creator, _rating, appVars);
 
-    }
+    // }
 
     function rateCreator(address _creator, uint _rating) public onlyRegistered {
         

@@ -1,16 +1,12 @@
-// // SPDX-License-Identifier: MIT
-// pragma solidity ^0.8.20;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.20;
 
-// import "./lib/AppLibrary.sol";
-// import "./lib/LayoutLibrary.sol";
-// import "./lib/SubscriptionLibrary.sol";
-
+import "./lib/AppLibrary.sol";
+import "./lib/LayoutLibrary.sol";
+import "./lib/SubscriptionLibrary.sol";
 
 contract Subscription {
     LayoutLibrary.SubscriptionLayout internal subscriptionVars;
-
-
-//     address owner;
 
     uint256 public platformPercentage;
     uint256 public platformEarnings;

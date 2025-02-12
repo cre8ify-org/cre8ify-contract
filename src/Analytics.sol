@@ -72,7 +72,6 @@ contract Analytics {
         AnalyticsLibrary.trackExclusiveRating(_id, _rating, analyticsVars);
     }
 
-
     // Track creator followers
     function trackFollower(
         address _creator,

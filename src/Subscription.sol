@@ -1,75 +1,94 @@
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+// Subscription.sol
+pragma solidity ^0.8.26;
 
 import "./lib/AppLibrary.sol";
 import "./lib/LayoutLibrary.sol";
-import "./lib/SubscriptionLibrary.sol";
 
 contract Subscription {
-    
     LayoutLibrary.SubscriptionLayout internal subscriptionVars;
 
-    address owner;
+    uint256 public platformPercentage;
+    mapping(address => uint256) public creatorAccruedTips;
 
-    constructor(address _tokenAddress, address _vaultAddress, address _authorization) {
-        
+    // Events
+    event TipProcessed(
+        address indexed creator,
+        uint256 amount,
+        uint256 platformFee
+    );
+    event PayoutProcessed(
+        address indexed creator,
+        uint256 amount,
+        uint256 timestamp
+    );
+
+    constructor(
+        address _tokenAddress,
+        address _vaultAddress,
+        address _authorization
+    ) {
         subscriptionVars.token = IERC20(_tokenAddress);
-
         subscriptionVars.vault = IVault(_vaultAddress);
-
-        owner = msg.sender;
-
         subscriptionVars.authorizationContract = IAuthorization(_authorization);
+        platformPercentage = 5; // Default platform fee set to 5%
     }
 
-    function setMonthlySubscriptionAmount(uint256 _amount) public {
-
-        SubscriptionLibrary.setMonthlySubscriptionAmount(_amount, subscriptionVars);
-
+    modifier onlyOwner() {
+        require(
+            msg.sender == subscriptionVars.authorizationContract.owner(),
+            "Only owner can call this function"
+        );
+        _;
     }
 
-    function tipCreator(address _creator, uint256 amount) public {
-
-        SubscriptionLibrary.tipCreator(_creator, amount, subscriptionVars);
-
+    // Function to update the platform's percentage fee
+    function setPlatformPercentage(uint256 _percentage) public onlyOwner {
+        require(_percentage <= 100, "Percentage cannot exceed 100");
+        platformPercentage = _percentage;
     }
 
-    function fetchSubscribers(address _creator) public view returns(AppLibrary.User[] memory) {
+    // Tip Creator logic
+    function tipCreator(address _creator, uint256 _amount) external {
+        require(_amount > 0, "Amount must be greater than zero");
 
-        return SubscriptionLibrary.fetchSubscribers(_creator, subscriptionVars);
+        // Calculate the creator's amount after platform fee
+        uint256 platformFee = (_amount * platformPercentage) / 100;
+        uint256 creatorAmount = _amount - platformFee;
 
+        // Update accrued tips with the amount AFTER the platform fee
+        creatorAccruedTips[_creator] += creatorAmount;
+
+        // Transfer tokens from user to vault
+        require(
+            subscriptionVars.token.transferFrom(
+                msg.sender,
+                address(subscriptionVars.vault),
+                _amount
+            ),
+            "Transfer failed"
+        );
+
+        // Emit event
+        emit TipProcessed(_creator, _amount, platformFee);
     }
 
-    function fetchSubscribedTo(address _subscriber) public view returns(AppLibrary.User[] memory) {
+    // Function for creators to claim their tips
+    function claimTips() public {
+        uint256 accruedAmount = creatorAccruedTips[msg.sender];
+        require(accruedAmount > 0, "No tips to claim");
 
-        return SubscriptionLibrary.fetchSubscribedTo(_subscriber, subscriptionVars);
+        // Reset the creator's accrued tips balance
+        creatorAccruedTips[msg.sender] = 0;
 
+        // Request the Vault to transfer tokens to the creator
+        subscriptionVars.vault.CreatorPayout(accruedAmount, msg.sender);
+
+        // Emit event
+        emit PayoutProcessed(msg.sender, accruedAmount, block.timestamp);
     }
 
-    function getCreatorSubscriptionAmount(address _creator) public view returns(uint256){
-
-        return SubscriptionLibrary.getCreatorSubscriptionAmount(_creator, subscriptionVars);
-
-    }
-
-    // Subscribe to platform using tokens
-    function subscribeToCreator(address _creator, uint256 _amount) public {
-        
-        SubscriptionLibrary.subscribeToCreator(_creator, _amount, subscriptionVars);
-
-    }
-
-    // Check if user is subscribed to creator
-    function checkSubscribtionToCreatorStatus(address _creator, address _subscriber) public view returns (bool) {
-        
-        return SubscriptionLibrary.checkSubscribtionToCreatorStatus(_creator, _subscriber, subscriptionVars);
-
-    }
-
-    // Payout money earned
-    function payout(uint256 _amount, address _creator) public {
-
-        SubscriptionLibrary.payout(_amount, _creator, subscriptionVars);
-        
+    // Function to check a creator's accrued tips
+    function getAccruedTips(address _creator) public view returns (uint256) {
+        return creatorAccruedTips[_creator];
     }
 }

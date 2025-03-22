@@ -1,29 +1,24 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Token is ERC20 {
-    uint256 public constant TOTAL_SUPPLY = 1000000000 * 10**18; 
+    uint256 public constant TOTAL_SUPPLY = 1000000000 * 10 ** 18;
 
     address owner;
 
     constructor(string memory name, string memory symbol) ERC20(name, symbol) {
-            
-            _mint(msg.sender, TOTAL_SUPPLY);
+        _mint(msg.sender, TOTAL_SUPPLY);
 
-            owner = msg.sender;
-        }
+        owner = msg.sender;
+    }
 
-        function mint(address account, uint256 amount) external {
+    function mint(address account, uint256 amount) external {
+        _mint(account, amount);
+    }
 
-            _mint(account, amount);
-
-        }
-
-        function totalSupply() public pure override returns (uint256) {
-
-            return TOTAL_SUPPLY;
-            
-        }
+    function totalSupply() public pure override returns (uint256) {
+        return TOTAL_SUPPLY;
+    }
 }

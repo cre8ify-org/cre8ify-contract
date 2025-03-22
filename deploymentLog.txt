@@ -1,0 +1,125 @@
+== Logs ==
+  Deploying Token...
+  Token deployed at: 0x7A4DaBc10dE2C24D5a1934CFe356D28414Fa80C6
+  Deploying Authorization...
+  Authorization deployed at: 0x9951accC763a8B7059E77DE54A0b44e1D71518c7
+  Deploying Vault...
+  Vault deployed at: 0x8B7AD4ff02071127674fA871B1e7fd102AE2e140
+  Deploying Analytics...
+  Analytics deployed at: 0x39dA3Ff09cB3beB8D5cF51480F77eF478D10df78
+  Deploying Subscription...
+  Subscription deployed at: 0xa0997749DE8164626Da622A782C73b8F7BF9Ef6C
+  Deploying CCP...
+  CCP deployed at: 0x3513144a02baE52b948DDF276C27C86cA5d3998C
+  Deploying PlatformTreasury...
+  PlatformTreasury deployed at: 0x49C673BED2c9a64f2eaD1167AFA5357b32CC716F
+  Setting up contract connections...
+  Updated Analytics with CCP address
+  Set Subscription contract in Vault
+  Set PlatformTreasury address in Vault
+  Deployment completed successfully!
+
+## Setting up 1 EVM.
+
+==========================
+
+Chain 4202
+
+Estimated gas price: 0.000000507 gwei
+
+Estimated total gas used for script: 14794823
+
+Estimated amount required: 0.000000007500975261 ETH
+
+==========================
+
+##### 4202
+✅  [Success] Hash: 0xf74472cdc4269d5b3f54ff0dde8f93744e24aa7bfa9cce0d6e1700909031c5ba
+Block: 18663141
+Paid: 0.000000000188337698 ETH (741487 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0x002db682173d919e4fde3e611ef00a1c77cce80e1362f08d2df3d0d638b8502a
+Contract Address: 0x8B7AD4ff02071127674fA871B1e7fd102AE2e140
+Block: 18663141
+Paid: 0.000000000141699742 ETH (557873 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0xb90472609c4f6bc95e398087114ba945544e997e55b345acc7db79ccd6280e7b
+Contract Address: 0x9951accC763a8B7059E77DE54A0b44e1D71518c7
+Block: 18663141
+Paid: 0.00000000015729966 ETH (619290 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0x145e0fc02b7c15d8972958cda0df4555bdd747ecb4601cd47d7435ac231c37aa
+Contract Address: 0x39dA3Ff09cB3beB8D5cF51480F77eF478D10df78
+Block: 18663141
+Paid: 0.000000000211699094 ETH (833461 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0x14833fc0d8c95694ef0368c0c88502ee5dd61cb4401e54f560dc5a00cae2e0c5
+Block: 18663141
+Paid: 0.000000000651854424 ETH (2566356 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0xeeedc4ac89d352defbd5439e9d6603f7ecd41d01071df2477a6abbd133de439b
+Block: 18663141
+Paid: 0.000000000412632398 ETH (1624537 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0xd8321fa630bbf8270fd84137e8de1f2f9f6625e94fbe53f5ef1477b773ba1b78
+Contract Address: 0xa0997749DE8164626Da622A782C73b8F7BF9Ef6C
+Block: 18663141
+Paid: 0.00000000012406884 ETH (488460 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0xdc90a867b2f87678419a679d3b97ad4b8dc99b01249260f13c169d9e18b9e9d5
+Contract Address: 0x3513144a02baE52b948DDF276C27C86cA5d3998C
+Block: 18663141
+Paid: 0.000000000390991344 ETH (1539336 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0x9a45a33131ba57a3ea93a568ea530ed16908ed004ef6d41b545454a94c84e3db
+Contract Address: 0x49C673BED2c9a64f2eaD1167AFA5357b32CC716F
+Block: 18663141
+Paid: 0.000000000316658498 ETH (1246687 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0xa6a778be25c4be48a7b7816bf1f1fbccbbdd9b2367f4187ee8fa27ada52edfc4
+Contract Address: 0x7A4DaBc10dE2C24D5a1934CFe356D28414Fa80C6
+Block: 18663141
+Paid: 0.0000000001516253 ETH (596950 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0x572e3d68eb62ab351eafa15efb93db9bb4a91df8b97dc37c0cb9473550e08cbc
+Block: 18663141
+Paid: 0.000000000011989308 ETH (47202 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0x559621f7556a973eba139c2af6c2e9804ef381e6c005f83d4e5a27cd532d127e
+Block: 18663141
+Paid: 0.00000000001198753 ETH (47195 gas * 0.000000254 gwei)
+
+
+##### 4202
+✅  [Success] Hash: 0x849546c1b7393d8f47e8d302ff7fd6b85c6fc7b49f0090fb42c8d916cc796446
+Block: 18663141
+Paid: 0.000000000012000484 ETH (47246 gas * 0.000000254 gwei)
+
+✅ Sequence #1 on 4202 | Total Paid: 0.00000000278284432 ETH (10956080 gas * avg 0.000000254 gwei)
+                                                                                                                             
+
+==========================
+
+ONCHAIN EXECUTION COMPLETE & SUCCESSFUL.

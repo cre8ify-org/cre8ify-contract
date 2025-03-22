@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.26;
 
 import "../lib/AppLibrary.sol";
 
@@ -29,12 +29,24 @@ interface IAnalytics {
     function trackFollower(address _creator, bool inc) external;
 
     // Get Free content analytics
-    function getFreeContentAnalytics(uint256 _id) external view returns(AppLibrary.ContentAnalytics memory);
+    function getFreeContentAnalytics(
+        uint256 _id
+    ) external view returns (AppLibrary.ContentAnalytics memory);
 
     // Get exclusive content analytics
-    function getExclusiveContentAnalytics(uint256 _id) external view returns(AppLibrary.ContentAnalytics memory);
+    function getExclusiveContentAnalytics(
+        uint256 _id
+    ) external view returns (AppLibrary.ContentAnalytics memory);
 
     // Get creator content analytics
-    function getCreatorAnalytics(address _creator) external view returns(AppLibrary.CreatorAnalytics memory);
+    function getCreatorAnalytics(
+        address _creator
+    ) external view returns (AppLibrary.CreatorAnalytics memory);
 
+    //track tips
+    function trackTip(address _creator, uint256 _amount) external;
+
+    function getUserBadges(
+        address _user
+    ) external view returns (string[] memory);
 }

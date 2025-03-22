@@ -1,7 +1,5 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.20;
-
-import "./LayoutLibrary.sol";
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.26;
 
 library AppLibrary {
     struct User {
@@ -29,84 +27,25 @@ library AppLibrary {
         string creatorImage;
     }
 
-    function searchContentByTitle(
-        string memory _title,
-        LayoutLibrary.ContentDiscoveryLayout storage discoveryVars
-    ) internal view returns (ContentItem[] memory) {
-        uint256 resultCount;
-        for (uint256 i = 0; i < discoveryVars.freeContentsArray.length; i++) {
-            if (
-                keccak256(bytes(discoveryVars.freeContentsArray[i].title)) ==
-                keccak256(bytes(_title))
-            ) {
-                resultCount++;
-            }
-        }
-
-        ContentItem[] memory results = new ContentItem[](resultCount);
-        uint256 index = 0;
-        for (uint256 i = 0; i < discoveryVars.freeContentsArray.length; i++) {
-            if (
-                keccak256(bytes(discoveryVars.freeContentsArray[i].title)) ==
-                keccak256(bytes(_title))
-            ) {
-                results[index] = discoveryVars.freeContentsArray[i];
-                index++;
-            }
-        }
-        return results;
+    struct ContentAnalytics {
+        uint256 likes;
+        uint256 dislikes;
+        uint256 rating;
     }
 
-    function searchCreatorsByUsername(
-        string memory _username,
-        LayoutLibrary.ContentDiscoveryLayout storage discoveryVars
-    ) internal view returns (User memory) {
-        address walletAddress = discoveryVars
-            .authorizationContract
-            .getUserAddress(_username);
-        return
-            discoveryVars.authorizationContract.getUserDetails(walletAddress);
+    struct CreatorAnalytics {
+        uint256 rating;
+        uint256 followersCount;
     }
 
-    function getTrendingFreeContent(
-        LayoutLibrary.ContentDiscoveryLayout storage discoveryVars
-    ) internal view returns (ContentItem[] memory) {
-        uint256 topCount = discoveryVars.trendingCount;
-        ContentItem[] memory trending = new ContentItem[](topCount);
-
-        for (uint256 i = 0; i < topCount; i++) {
-            trending[i] = discoveryVars.freeContentsArray[i];
-        }
-
-        return trending;
+    struct TippingInfo {
+        address tipper;
+        uint256 amount;
+        uint256 timestamp;
     }
 
-    function getTrendingCreators(
-        LayoutLibrary.ContentDiscoveryLayout storage discoveryVars
-    ) internal view returns (User[] memory) {
-        uint256 topCount = discoveryVars.trendingCount;
-        User[] memory trending = new User[](topCount);
-
-        for (uint256 i = 0; i < topCount; i++) {
-            trending[i] = discoveryVars.creatorsArray[i];
-        }
-
-        return trending;
-    }
-
-    function getRecommendedFreeContent(
-        address _user,
-        LayoutLibrary.ContentDiscoveryLayout storage discoveryVars
-    ) internal view returns (ContentItem[] memory) {
-        uint256 recommendationsCount = discoveryVars.recommendationsCount;
-        ContentItem[] memory recommendations = new ContentItem[](
-            recommendationsCount
-        );
-
-        for (uint256 i = 0; i < recommendationsCount; i++) {
-            recommendations[i] = discoveryVars.recommendedContents[_user][i];
-        }
-
-        return recommendations;
+    struct Badge {
+        string name;
+        uint256 threshold;
     }
 }

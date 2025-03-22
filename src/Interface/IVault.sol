@@ -1,12 +1,22 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.26;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 interface IVault {
-    // Tip a creator using platform tokens
-    function tipCreator(uint256 amount, address _tipper, address _creator) external;
+    function tipCreator(
+        uint256 amount,
+        address _Tipper,
+        address _creator
+    ) external;
 
-    // Payout to the creator
+    function subscribe(
+        uint256 amount,
+        address _subscriber,
+        address _creator
+    ) external;
+
     function CreatorPayout(uint256 amount, address _creator) external;
+
+    function getPlatformEarnings() external view returns (uint256);
 }

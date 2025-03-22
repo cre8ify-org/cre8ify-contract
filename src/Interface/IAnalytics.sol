@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.26;
 
 import "../lib/AppLibrary.sol";
 
@@ -37,38 +37,25 @@ interface IAnalytics {
      */
     function trackFollower(address _creator, bool inc) external;
 
-    /**
-     * @notice Retrieve analytics data for a specific free content item
-     * @param _id The ID of the content
-     * @return AppLibrary.ContentAnalytics The analytics data for the content
-     */
-    function getFreeContentAnalytics(uint256 _id) external view returns (AppLibrary.ContentAnalytics memory);
+    // Get Free content analytics
+    function getFreeContentAnalytics(
+        uint256 _id
+    ) external view returns (AppLibrary.ContentAnalytics memory);
 
-    /**
-     * @notice Retrieve analytics data for a specific creator
-     * @param _creator The address of the creator
-     * @return AppLibrary.CreatorAnalytics The analytics data for the creator
-     */
-    function getCreatorAnalytics(address _creator) external view returns (AppLibrary.CreatorAnalytics memory);
+    // Get exclusive content analytics
+    function getExclusiveContentAnalytics(
+        uint256 _id
+    ) external view returns (AppLibrary.ContentAnalytics memory);
 
-    /**
-     * @notice Get the total likes for a specific free content item
-     * @param _id The ID of the content
-     * @return uint256 The total number of likes
-     */
-    function getTotalLikes(uint256 _id) external view returns (uint256);
+    // Get creator content analytics
+    function getCreatorAnalytics(
+        address _creator
+    ) external view returns (AppLibrary.CreatorAnalytics memory);
 
-    /**
-     * @notice Get the total dislikes for a specific free content item
-     * @param _id The ID of the content
-     * @return uint256 The total number of dislikes
-     */
-    function getTotalDislikes(uint256 _id) external view returns (uint256);
+    //track tips
+    function trackTip(address _creator, uint256 _amount) external;
 
-    /**
-     * @notice Get the total followers for a specific creator
-     * @param _creator The address of the creator
-     * @return uint256 The total number of followers
-     */
-    function getTotalFollowers(address _creator) external view returns (uint256);
+    function getUserBadges(
+        address _user
+    ) external view returns (string[] memory);
 }

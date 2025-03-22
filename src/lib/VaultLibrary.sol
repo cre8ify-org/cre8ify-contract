@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.26;
 
 import "./LayoutLibrary.sol";
 
@@ -7,90 +7,98 @@ library VaultLibrary {
     event Tipped(
         address indexed creator,
         address indexed tipper,
-        uint256 amount
+        uint256 amount,
+        uint256 platformFee
     );
-    event WithdrawnAccrued(address indexed creator, uint256 amount);
+    event Subscribed(
+        address indexed creator,
+        address indexed subscriber,
+        uint256 amount,
+        uint256 platformFee
+    );
+    event WithdrawnAccured(address indexed creator, uint256 amount);
+    event PlatformFeeDeducted(uint256 amount);
 
-    /**
-     * @notice Function to tip a creator
-     * @param amount The amount of tokens to tip
-     * @param tipper The address of the tipper
-     * @param creator The address of the creator being tipped
-     * @param vaultVars The VaultLayout storage containing tipping information
-     */
+    // Tip a creator (with platform fee deduction)
     function tipCreator(
         uint256 amount,
-        address tipper,
-        address creator,
+        address _tipper,
+        address _creator,
         LayoutLibrary.VaultLayout storage vaultVars
     ) external {
         require(
-            vaultVars.token.balanceOf(tipper) >= amount,
+            vaultVars.token.balanceOf(_tipper) >= amount,
             "Insufficient balance"
         );
-        require(amount > 0, "Tip amount must be greater than zero");
 
-        // Transfer tokens from tipper to the contract
-        require(
-            vaultVars.token.transferFrom(tipper, address(this), amount),
-            "Token transfer failed"
-        );
+        // Deduct platform fee
+        uint256 platformFee = (amount * vaultVars.platformPercentage) / 100;
+        uint256 remainingAmount = amount - platformFee;
 
-        // Update the creator's accrued amount and overall tipping balance
-        vaultVars.creatorAccrued[creator] += amount;
-        vaultVars.tippingBalances += amount;
+        // Transfer platform fee to the platform
+        vaultVars.token.transferFrom(_tipper, address(this), platformFee);
+        vaultVars.platformEarnings += platformFee;
 
-        emit Tipped(creator, tipper, amount);
+        // Transfer remaining amount to the creator
+        vaultVars.token.transferFrom(_tipper, _creator, remainingAmount);
+        vaultVars.creatorAccured[_creator] += remainingAmount;
+
+        emit Tipped(_creator, _tipper, remainingAmount, platformFee);
+        emit PlatformFeeDeducted(platformFee);
     }
 
-    /**
-     * @notice Function for a creator to withdraw their accrued tips
-     * @param amount The amount of tokens to withdraw
-     * @param creator The address of the creator withdrawing tips
-     * @param vaultVars The VaultLayout storage containing tipping information
-     */
-    function creatorPayout(
+    // Subscribe to a creator (with platform fee deduction)
+    function subscribe(
         uint256 amount,
-        address creator,
+        address _subscriber,
+        address _creator,
         LayoutLibrary.VaultLayout storage vaultVars
     ) external {
         require(
-            vaultVars.creatorAccrued[creator] >= amount,
-            "Insufficient funds"
+            vaultVars.token.balanceOf(_subscriber) >= amount,
+            "Insufficient balance"
         );
-        require(amount > 0, "Payout amount must be greater than zero");
 
-        // Update balances
-        vaultVars.creatorAccrued[creator] -= amount;
-        vaultVars.tippingBalances -= amount;
+        // Deduct platform fee
+        uint256 platformFee = (amount * vaultVars.platformPercentage) / 100;
+        uint256 remainingAmount = amount - platformFee;
 
-        // Transfer tokens to the creator
-        require(vaultVars.token.transfer(creator, amount), "Payout failed");
+        // Transfer platform fee to the platform
+        vaultVars.token.transferFrom(_subscriber, address(this), platformFee);
+        vaultVars.platformEarnings += platformFee;
 
-        emit WithdrawnAccrued(creator, amount);
+        // Transfer remaining amount to the creator
+        vaultVars.token.transferFrom(_subscriber, _creator, remainingAmount);
+        vaultVars.creatorAccured[_creator] += remainingAmount;
+
+        emit Subscribed(_creator, _subscriber, remainingAmount, platformFee);
+        emit PlatformFeeDeducted(platformFee);
     }
 
-    /**
-     * @notice View function to check a creator's accrued balance
-     * @param creator The address of the creator
-     * @param vaultVars The VaultLayout storage containing tipping information
-     * @return uint256 The accrued balance of the creator
-     */
-    function getCreatorAccrued(
-        address creator,
+    // Creator payout (with platform fee deduction)
+    function CreatorPayout(
+        uint256 amount,
+        address _creator,
         LayoutLibrary.VaultLayout storage vaultVars
-    ) external view returns (uint256) {
-        return vaultVars.creatorAccrued[creator];
-    }
+    ) external {
+        require(
+            vaultVars.creatorAccured[_creator] >= amount,
+            "Insufficient balance"
+        );
 
-    /**
-     * @notice View function to check the total tipping balances in the contract
-     * @param vaultVars The VaultLayout storage containing tipping information
-     * @return uint256 The total tipping balance held in the contract
-     */
-    function getTotalTippingBalances(
-        LayoutLibrary.VaultLayout storage vaultVars
-    ) external view returns (uint256) {
-        return vaultVars.tippingBalances;
+        // Deduct platform fee
+        uint256 platformFee = (amount * vaultVars.platformPercentage) / 100;
+        uint256 remainingAmount = amount - platformFee;
+
+        // Transfer platform fee to the platform
+        vaultVars.token.transfer(address(this), platformFee);
+        vaultVars.platformEarnings += platformFee;
+
+        // Transfer remaining amount to the creator
+        vaultVars.token.transfer(_creator, remainingAmount);
+        vaultVars.creatorAccured[_creator] -= amount;
+
+        emit WithdrawnAccured(_creator, remainingAmount);
+        emit PlatformFeeDeducted(platformFee);
     }
 }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.26;
 
 import "./AppLibrary.sol";
 import "./LayoutLibrary.sol";
@@ -17,6 +17,20 @@ library AuthorizationLibrary {
         uint256 amount,
         uint256 timestamp
     );
+
+    function registerUser(
+        string memory _username,
+        string memory _profileImage,
+        LayoutLibrary.AuthorizationLayout storage authorizationVars
+    ) external {
+        require(
+            !authorizationVars.registeredUsers[msg.sender],
+            "User is already registered"
+        );
+        require(
+            authorizationVars.usernameAddressTracker[_username] == address(0),
+            "Username is already taken"
+        );
 
     function registerUser(
         string memory _username,
@@ -96,46 +110,5 @@ library AuthorizationLibrary {
         LayoutLibrary.AuthorizationLayout storage authorizationVars
     ) external view returns (bool) {
         return authorizationVars.registeredUsers[_user];
-    }
-
-    function tipUser(
-        address _recipient,
-        uint256 _amount,
-        LayoutLibrary.AuthorizationLayout storage authorizationVars
-    ) external {
-        require(
-            authorizationVars.registeredUsers[_recipient],
-            "Recipient must be a registered user"
-        );
-        require(_amount > 0, "Tip amount must be greater than zero");
-
-        AppLibrary.User storage recipient = authorizationVars.userDetails[
-            _recipient
-        ];
-        recipient.totalTipsReceived += _amount;
-
-        authorizationVars.tipHistory[_recipient].push(
-            AppLibrary.TippingInfo({
-                tipper: msg.sender,
-                amount: _amount,
-                timestamp: block.timestamp
-            })
-        );
-
-        emit TipSent(msg.sender, _recipient, _amount, block.timestamp);
-    }
-
-    function fetchTippingHistory(
-        address _user,
-        LayoutLibrary.AuthorizationLayout storage authorizationVars
-    ) external view returns (AppLibrary.TippingInfo[] memory) {
-        return authorizationVars.tipHistory[_user];
-    }
-
-    function fetchTotalTipsReceived(
-        address _user,
-        LayoutLibrary.AuthorizationLayout storage authorizationVars
-    ) external view returns (uint256) {
-        return authorizationVars.userDetails[_user].totalTipsReceived;
     }
 }
